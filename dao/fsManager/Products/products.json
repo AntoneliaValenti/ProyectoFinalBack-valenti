@@ -1,0 +1,38 @@
+[
+    {
+      "id": 0,
+      "title": "Donde todo brilla",
+      "description": "Libro de Allice kelen",
+      "price": 1000,
+      "thumbnail": "../Assets/donde.jpg",
+      "code": 1001,
+      "stock": 25
+    },
+    {
+      "id": 1,
+      "title": "El mapa de los anhelos",
+      "description": "Libro de Allice kelen",
+      "price": 1100,
+      "thumbnail": "../Assets/mapa.jpg",
+      "code": 1002,
+      "stock": 20
+    },
+    {
+      "id": 2,
+      "title": "El dia que dejo de nevar en Alaska",
+      "description": "Libro de Allice kelen",
+      "price": 1200,
+      "thumbnail": "../Assets/dia.jpg",
+      "code": 1003,
+      "stock": 15
+    },
+    {
+      "id": 3,
+      "title": "Nosotros en la luna",
+      "description": "Libro de Allice kelen",
+      "price": 1500,
+      "thumbnail": "../Assets/luna.jpg",
+      "code": 1004,
+      "stock": 5
+    }
+  ]
