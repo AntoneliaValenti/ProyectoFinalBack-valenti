@@ -6,7 +6,7 @@ const handlebars = require('express-handlebars')
 const http = require('http')
 const { Server } = require('socket.io')
 const server = http.createServer(app)
-const Database = require('./dao/db/models/index')
+const Database = require('./dao/db/index')
 
 
 

@@ -2,6 +2,9 @@ const express = require('express')
 const { Router } = require('express')
 const Products = require('../dao/db/models/product.model')
 const route = new Router()
+const ProductManagerMongo = require('../dao/db/productManagerMongo')
+const productmanagerm = new ProductManagerMongo()
+
 
 
 route.get('/allProducts', async (req, res)=> {
@@ -15,6 +18,17 @@ route.get('/allProducts', async (req, res)=> {
     console.log(err)
   }
  
+})
+
+route.post('/Products', async (req, res) => {
+  console.log(req.body)
+  try {
+    const { name, price, category, stock } = req.body
+    const response = await productmanagerm.addProduct({name, price, category, stock})
+    res.json(response)
+  }catch (err) {
+    console.log(err)
+  }
 })
   
 route.post('/createProd', async (req, res) => {

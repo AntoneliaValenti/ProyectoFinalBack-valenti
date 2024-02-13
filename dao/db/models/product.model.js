@@ -4,16 +4,16 @@ const ProductsSchema = new mongoose.Schema({
     name: {
         type: String,
         unique: true,
-        require: true
+        required: true
     },
     price: {
         type: Number, 
-        require: true
+        required: true
     },
     category: {
             type: String,
-            require: true,
-            enum: ['']
+            required: true,
+            enum: ['amor', 'odio']
         },
     stock: {
         type: Number,
