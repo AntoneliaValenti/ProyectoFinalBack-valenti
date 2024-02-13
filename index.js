@@ -38,7 +38,7 @@ io.on('connection', async (socket) =>{
     socket.on ('borrar', async (id) => {
       await delProd(id)
     })
-    socket.emit('new-message', (data) => {
+    socket.emit('message', (data) => {
         console.log('Nuevo mensaje:', data)
     })
 })
