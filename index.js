@@ -6,14 +6,14 @@ const handlebars = require('express-handlebars')
 const http = require('http')
 const { Server } = require('socket.io')
 const server = http.createServer(app)
-const Database = require('./db/index')
+const Database = require('./dao/db/models/index')
 
 
 
 
 
 //PRODUCTMANAGER
-const ProductManager = require('./dao/fsManager/Products/ProductManager')
+const ProductManager = require('./dao/fileSystem/Products/ProductManager')
 const pm = new ProductManager()
 
 //MIDLEWARE(formatea el body)
@@ -37,6 +37,9 @@ io.on('connection', async (socket) =>{
     socket.emit('welcome', prods)
     socket.on ('borrar', async (id) => {
       await delProd(id)
+    })
+    socket.emit('new-message', (data) => {
+        console.log('Nuevo mensaje:', data)
     })
 })
 
@@ -69,3 +72,5 @@ const delProd = async (id) => {
         return false
     }
 }
+
+

@@ -1,6 +1,6 @@
 const express = require('express')
 const { Router } = require('express')
-const Products = require('../db/models/product.model')
+const Products = require('../dao/db/models/product.model')
 const route = new Router()
 
 
@@ -29,9 +29,9 @@ route.post('/createProd', async (req, res) => {
   }
 })
 //Routes
-// route.get('/', (req, res)=> {
-//     res.render("home")
-//   })
+route.get('/mensaje', (req, res)=> {
+    res.render("chat")
+  })
 
 
 module.exports = route
