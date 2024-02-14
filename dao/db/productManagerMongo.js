@@ -14,7 +14,6 @@ class ProductManagerMongo {
     async addProduct({name, price, category, stock}) {
         
         try{
-            console.log({name, price, category, stock})
             await Product.create({name, price, category, stock})
             return ("Producto guardado") 
         } catch (err) {
@@ -23,9 +22,15 @@ class ProductManagerMongo {
 
     }
 
-    async deleteProduct() {
-   
-} 
+    async deleteProduct(id) {
+        try{
+            
+            await Product.deleteOne({_id:id})
+            return (`Producto eliminado: ${id}`) 
+        } catch (err) {
+            return(`El producto ${id} no existe`)
+        }
+    } 
 }
 
 
@@ -33,14 +38,3 @@ class ProductManagerMongo {
 module.exports = ProductManagerMongo
 
 
-// class ProductManagerMongo{
-//     async addProduct(pr){
-//         try {
-//             await Product.create(pr)
-//             return "Producto creado"
-//         } catch(err) {
-//             return 'error: ' + err
-//         }
-//     }
-// }
-// module.exports = ProductManagerMongo

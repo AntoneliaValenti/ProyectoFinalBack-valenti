@@ -27,7 +27,7 @@ route.post('/Products', async (req, res) => {
     const response = await productmanagerm.addProduct({name, price, category, stock})
     res.json(response)
   }catch (err) {
-    console.log(err)
+    res.status(400).send({ error: err.message })
   }
 })
   
@@ -40,6 +40,17 @@ route.post('/createProd', async (req, res) => {
     })
   }catch (err) {
     console.log(err)
+  }
+})
+
+route.delete("/:pid", async (req, res) => {
+  try {
+    const { pid } = req.params
+     const resp = await productmanagerm.deleteProduct(pid)
+    res.status(201).send(resp)
+  }catch (err) {
+    console.log(err)
+    res.status(400).send({ error: err})
   }
 })
 //Routes
