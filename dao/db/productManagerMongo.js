@@ -8,21 +8,38 @@ class ProductManagerMongo {
     }
 
     async getProds() {
-       
-    }
-
-    async addProduct({name, price, category, stock}) {
-        
-        try{
-            await Product.create({name, price, category, stock})
-            return ("Producto guardado") 
+        try {
+            const products = await Product.find()
+            return products
         } catch (err) {
-            return(err)
+            console.error(err)
+            return []
         }
-
     }
 
-    async deleteProduct(id) {
+    // async addProduct({name, price, category, stock}) {
+        
+    //     try{
+    //         await Product.create({name, price, category, stock})
+    //         return ("Producto guardado") 
+    //     } catch (err) {
+    //         return(err)
+    //     }
+
+    // }
+    async addProduct({ name, price, category, stock }) {
+        console.log('Agregando producto:', name)
+        try {
+          await Product.create({ name, price, category, stock })
+          console.log('Producto guardado:', name)
+          return 'Producto guardado'
+        } catch (err) {
+          console.error('Error al agregar el producto:', err)
+          return err.message
+        }
+      }
+
+    async deleteProduct(id) { 
         try{
             
             await Product.deleteOne({_id:id})

@@ -6,7 +6,7 @@ const ProductManagerMongo = require('../dao/db/productManagerMongo')
 const productmanagerm = new ProductManagerMongo()
 
 
-
+//funciona
 route.get('/allProducts', async (req, res)=> {
   try {
     let resp = await Products.find()
@@ -15,48 +15,35 @@ route.get('/allProducts', async (req, res)=> {
       data: resp
     })
   }catch (err) {
-    console.log(err)
+    res.status(400).send({ error: err.message })
   }
  
 })
 
+//funciona
 route.post('/Products', async (req, res) => {
-  console.log(req.body)
   try {
-    const { name, price, category, stock } = req.body
-    const response = await productmanagerm.addProduct({name, price, category, stock})
-    res.json(response)
-  }catch (err) {
-    res.status(400).send({ error: err.message })
-  }
-})
-  
-route.post('/createProd', async (req, res) => {
-  try {
-    await Products.create(req.body)
-    res.status(201).send({
-      msg: 'Productos creado',
-      data: req.body
-    })
-  }catch (err) {
-    console.log(err)
+    const { name, price, category, stock } = req.body;
+    const response = await productmanagerm.addProduct({ name, price, category, stock })
+    res.json({ success: true, message: 'Producto agregado correctamente', data: response })
+  } catch (err) {
+    console.error(err)
+    res.status(400).json({ success: false, error: { type: err.name, message: err.message } })
   }
 })
 
+
+//funciona
 route.delete("/:pid", async (req, res) => {
   try {
     const { pid } = req.params
      const resp = await productmanagerm.deleteProduct(pid)
     res.status(201).send(resp)
   }catch (err) {
-    console.log(err)
     res.status(400).send({ error: err})
   }
 })
-//Routes
-route.get('/mensaje', (req, res)=> {
-    res.render("chat")
-  })
+
 
 
 module.exports = route

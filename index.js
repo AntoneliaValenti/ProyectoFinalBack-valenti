@@ -13,11 +13,14 @@ const Database = require('./dao/db/index')
 
 
 //PRODUCTMANAGER
-const ProductManager = require('./dao/fileSystem/Products/ProductManager')
+const ProductManager = require('./dao/db/productManagerMongo')
 const pm = new ProductManager()
 
 //MIDLEWARE(formatea el body)
 app.use(express.json())
+// Otro middleware para analizar datos de formulario
+app.use(express.urlencoded({ extended: true }))
+
 
 //PUBLIC
 app.use(express.static(__dirname+'/public'))
@@ -38,9 +41,11 @@ io.on('connection', async (socket) =>{
     socket.on ('borrar', async (id) => {
       await delProd(id)
     })
-    socket.emit('message', (data) => {
+    socket.on('new-message', (data) => {
         console.log('Nuevo mensaje:', data)
+        render([data])
     })
+
 })
 
 

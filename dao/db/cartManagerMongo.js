@@ -9,5 +9,17 @@ class CartManagerMongo{
             return 'error: ' + err
         }
     }
+
+
+    // async deleteCart(id) {
+    //     try{
+            
+    //         await Product.deleteOne({_id:id})
+    //         return (`Carrito vacio: ${id}`) 
+    //     } catch (err) {
+    //         return(`El carrito ${id} no existe`)
+    //     }
+    // } 
+
 }
 module.exports = CartManagerMongo
