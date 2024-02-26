@@ -1,9 +1,9 @@
-const Message = require ('../models')
+const Message = require ('../db/models/message.model')
 
 class MessageManagerMongo{
-    async addMessage(msg){
+    async addMessage(Messages){
         try {
-            await Message.create(msg)
+            await Message.create(Messages)
             return "Mensaje enviado"
         } catch(err) {
             return 'error: ' + err

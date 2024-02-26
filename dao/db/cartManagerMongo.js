@@ -1,25 +1,17 @@
-const Cart = require ('../models')
+const Cart = require ('../db/models/cart.model')
 
-class CartManagerMongo{
-    async addMessage(carrito){
+class CartManagerMongo {
+    async addCart(carrito){
         try {
             await Cart.create(carrito)
-            return "Mensaje enviado"
+            return "Carrito creado con exito"
         } catch(err) {
             return 'error: ' + err
         }
     }
 
 
-    // async deleteCart(id) {
-    //     try{
-            
-    //         await Product.deleteOne({_id:id})
-    //         return (`Carrito vacio: ${id}`) 
-    //     } catch (err) {
-    //         return(`El carrito ${id} no existe`)
-    //     }
-    // } 
+ 
 
 }
 module.exports = CartManagerMongo

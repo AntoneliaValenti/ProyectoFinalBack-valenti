@@ -17,16 +17,6 @@ class ProductManagerMongo {
         }
     }
 
-    // async addProduct({name, price, category, stock}) {
-        
-    //     try{
-    //         await Product.create({name, price, category, stock})
-    //         return ("Producto guardado") 
-    //     } catch (err) {
-    //         return(err)
-    //     }
-
-    // }
     async addProduct({ name, price, category, stock }) {
         console.log('Agregando producto:', name)
         try {

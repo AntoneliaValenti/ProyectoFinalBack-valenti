@@ -7,10 +7,11 @@ const http = require('http')
 const { Server } = require('socket.io')
 const server = http.createServer(app)
 const Database = require('./dao/db/index')
+const cartRoute = require('./routes/cart.routes')
 
 
-
-
+const CartManagerMongo = require('./dao/db/cartManagerMongo')
+const cm = new CartManagerMongo()   
 
 //PRODUCTMANAGER
 const ProductManager = require('./dao/db/productManagerMongo')
@@ -27,6 +28,7 @@ app.use(express.static(__dirname+'/public'))
 
 //ROUTES
 app.use('/api/products', prodRoute)
+app.use('/api/cart', cartRoute)
 
 //ENGINE
 app.engine('handlebars', handlebars.engine())  //inicializar

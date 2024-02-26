@@ -23,7 +23,7 @@ route.get('/allProducts', async (req, res)=> {
 //funciona
 route.post('/Products', async (req, res) => {
   try {
-    const { name, price, category, stock } = req.body;
+    const { name, price, category, stock } = req.body
     const response = await productmanagerm.addProduct({ name, price, category, stock })
     res.json({ success: true, message: 'Producto agregado correctamente', data: response })
   } catch (err) {
