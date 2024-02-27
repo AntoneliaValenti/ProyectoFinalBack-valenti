@@ -50,6 +50,32 @@ route.delete("/:pid", async (cartId) => {
       }
 })
 
+//Funcion encontrar producto dentro de un carrito:
+const findCart = async () => {
+let cart1 = await Cart.findOne({_id: '65dca47294982e10f0564e53'}).populate('products.product')
+cart1.products.push({product: '65da6a60f4bb2843db8a0167'})
+console.log(JSON.stringify(cart1, null, '/t')) 
 
+
+//actualizacion carrito
+await Cart.updateOne({_id:'65dca47294982e10f0564e53'}, cart1)
+}
+findCart()
+
+
+route.get('/cart', async (req, res) => {
+    try {
+        // Obtener el carrito y los datos necesarios
+        const cart = await Cart.findOne({ _id: '65dca47294982e10f0564e53' }).populate('products.product');
+        const data = {
+            products: cart.products
+        };
+
+        // Renderizar la plantilla con los datos
+        res.render('cart', data);
+    } catch (err) {
+        res.status(400).send({ error: err.message });
+    }
+});
 
 module.exports = route

@@ -1,0 +1,19 @@
+<div class="container">
+    <div>
+        <h1>CARRITO DE ECCOMERCE</h1>
+    </div>
+
+    <div id="caja" class="caja">
+         <h1>Carrito de Compras</h1>
+    {{#each products}}
+        <p>{{this.product.name}} - ${{this.product.price}} - {{this.product.category}} - {{this.product.stock}}</p>
+    {{/each}}
+    </div>
+
+
+     <button onclick="agregarProductoAlCarrito()">Agregar Producto</button>
+  
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/cart.js"></script>
