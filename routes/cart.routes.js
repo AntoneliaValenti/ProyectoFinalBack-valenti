@@ -22,8 +22,8 @@ route.get('/allCart', async (req, res) => {
 //funciona
 route.post('/Cart1', async (req, res) => {
   try {
-    const { name, total } = req.body
-    const response = await cartmanagerm.addCart({ name, total })
+    const { date, type } = req.body
+    const response = await cartmanagerm.addCart({ date, type })
     res.json({ success: true, message: 'Carrito agregado correctamente al carrito', data: response })
   } catch (err) {
     console.error(err)
@@ -40,7 +40,6 @@ route.delete("/:pid", async (cartId) => {
           throw new Error('Carrito no encontrado')
         }
   
-        // Limpiar contenido del carrito
         cart.items = []
         await cart.save()
   
@@ -54,7 +53,7 @@ route.delete("/:pid", async (cartId) => {
 const findCart = async () => {
 let cart1 = await Cart.findOne({_id: '65dca47294982e10f0564e53'}).populate('products.product')
 cart1.products.push({product: '65da6a60f4bb2843db8a0167'})
-console.log(JSON.stringify(cart1, null, '/t')) 
+//console.log(JSON.stringify(cart1, null, '/t')) 
 
 
 //actualizacion carrito

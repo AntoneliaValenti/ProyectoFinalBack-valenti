@@ -6,7 +6,7 @@
     <div id="caja" class="caja">
          <h1>Carrito de Compras</h1>
     {{#each products}}
-        <p>{{this.product.name}} - ${{this.product.price}} - {{this.product.category}} - {{this.product.stock}}</p>
+        <p>{{this.ProductsSchema.name}} - ${{this.product.price}} - {{this.product.category}} - {{this.product.stock}}</p>
     {{/each}}
     </div>
 
@@ -17,3 +17,4 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/cart.js"></script>
+

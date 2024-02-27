@@ -8,6 +8,7 @@ const { Server } = require('socket.io')
 const server = http.createServer(app)
 const Database = require('./dao/db/index')
 const cartRoute = require('./routes/cart.routes')
+const ProductsSchema = require('./dao/db/models/product.model')
 
 
 const CartManagerMongo = require('./dao/db/cartManagerMongo')
@@ -21,7 +22,6 @@ const pm = new ProductManager()
 app.use(express.json())
 // Otro middleware para analizar datos de formulario
 app.use(express.urlencoded({ extended: true }))
-
 
 //PUBLIC
 app.use(express.static(__dirname+'/public'))
@@ -50,6 +50,16 @@ io.on('connection', async (socket) =>{
 
 })
 
+//PAGINATE
+async function paginate() {
+    try {
+      let res = await ProductsSchema.paginate({}, {limit: 4, page: 2})
+        console.log(res)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+paginate()
 
 
 
