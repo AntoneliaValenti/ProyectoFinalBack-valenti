@@ -23,21 +23,21 @@ function agregarProductoAlCarrito() {
 }
 
 const render = () => {
-    fetch('./cart')
+    fetch('./cartProducts')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al obtener datos: ${response.statusText}`)
         }
-        return response.products.json()
+        return response.json()
       })
       .then((data) => {
-        console.log(data)
-        const data = products || [];
-        const html = products.map((elem) => {
+        console.log(data.data)
+        //const data = products || [];
+        const html = data.data.products.map((elem) => {
           return `
             <div class="card">
-              <p>${elem.date}</p>
-              <p>${elem.type}</p>
+              <p>${elem.product.name}</p>
+              <p>${elem.product.price}</p>
             </div>
           `;
         }).join('');

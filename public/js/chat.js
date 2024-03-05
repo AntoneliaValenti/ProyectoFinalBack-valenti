@@ -37,7 +37,7 @@ const render = async () => {
   }
   
   
-  render()
+render()
   
 
 

@@ -9,7 +9,14 @@ const server = http.createServer(app)
 const Database = require('./dao/db/index')
 const cartRoute = require('./routes/cart.routes')
 const ProductsSchema = require('./dao/db/models/product.model')
+const session = require('express-session')
 
+//SESSION
+app.use(session({
+    secret: 'codersecret',
+    resave: true,
+    saveUninitialized: true
+}))
 
 const CartManagerMongo = require('./dao/db/cartManagerMongo')
 const cm = new CartManagerMongo()   
@@ -51,15 +58,15 @@ io.on('connection', async (socket) =>{
 })
 
 //PAGINATE
-async function paginate() {
-    try {
-      let res = await ProductsSchema.paginate({}, {limit: 4, page: 2})
-        console.log(res)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-paginate()
+// async function paginate() {
+//     try {
+//       let res = await ProductsSchema.paginate({}, {limit: 4, page: 2})
+//         console.log(res)
+//     } catch (error) {
+//       console.error(error)
+//     }
+//   }
+// paginate()
 
 
 

@@ -63,15 +63,16 @@ findCart()
 
 
 route.get('/cart', async (req, res) => {
+    res.render('cart')
+})
+
+route.get('/cartProducts', async (req, res) => {
     try {
         // Obtener el carrito y los datos necesarios
         const cart = await Cart.findOne({ _id: '65dca47294982e10f0564e53' }).populate('products.product')
-        const data = {
-            products: cart.products
-        }
-
+        
         // Renderizar la plantilla con los datos
-        res.render('cart', data)
+        res.send({data: cart})
     } catch (err) {
         res.status(400).send({ error: err.message })
     }
