@@ -1,6 +1,7 @@
 const express = require('express')
 const PORT = 8080 || process.env.PORT
 const app = express()
+
 const prodRoute = require('./routes/products.routes')
 const handlebars = require('express-handlebars')
 const http = require('http')
@@ -10,13 +11,10 @@ const Database = require('./dao/db/index')
 const cartRoute = require('./routes/cart.routes')
 const ProductsSchema = require('./dao/db/models/product.model')
 const session = require('express-session')
+const sessionRoute = require('./routes/session.router')
+const viewRoute = require("./routes/views.router")
 
-//SESSION
-app.use(session({
-    secret: 'codersecret',
-    resave: true,
-    saveUninitialized: true
-}))
+
 
 const CartManagerMongo = require('./dao/db/cartManagerMongo')
 const cm = new CartManagerMongo()   
@@ -36,11 +34,20 @@ app.use(express.static(__dirname+'/public'))
 //ROUTES
 app.use('/api/products', prodRoute)
 app.use('/api/cart', cartRoute)
+app.use('/api/view', viewRoute)
+app.use('/api/session', sessionRoute)
 
 //ENGINE
 app.engine('handlebars', handlebars.engine())  //inicializar
 app.set('views', __dirname+'/views')  // 
 app.set('view engine', 'handlebars')  
+
+//SESSION
+app.use(session({
+    secret: 'codersecret',
+    resave: true,
+    saveUninitialized: true
+}))
 
 //SOCKET
 const io = new Server(server)

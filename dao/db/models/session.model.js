@@ -1,7 +1,11 @@
 const mongoose = require('mongoose')
 
-const SessionSchema = new mongoose.Schema({
+const UsersSchema = new mongoose.Schema({
     name: {
+        type: String,
+        required: true
+    }, 
+    lastname: {
         type: String,
         required: true
     }, 
@@ -10,17 +14,13 @@ const SessionSchema = new mongoose.Schema({
         required: true
     },
     password: {
-        required: true
-    },
-   
-    age: {
-        type: Number,
+        type: String,
         required: true
     }
 })
 
 
 
-const Session = mongoose.model('Session', SessionSchema)
+const Users = mongoose.model('users', UsersSchema)
 
-module.exports = Session
+module.exports = Users
