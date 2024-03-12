@@ -1,4 +1,4 @@
-const User = require("./models/session.model");
+const User = require("./models/user.model");
 
 class SessionManagerMongo {
   constructor() {
@@ -48,3 +48,4 @@ function auth(req, res, next) {
 }
 
 module.exports = SessionManagerMongo;
+
