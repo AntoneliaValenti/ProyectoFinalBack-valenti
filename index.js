@@ -12,7 +12,7 @@ const session = require("express-session")
 const usersRoute = require("./routes/users.router");
 const viewRoute = require("./routes/views.router");
 const sessionRouter = require('./routes/session.router')
-const {createHash} = require('./utils/bcrypts')
+//const {createHash} = require('./utils/bcrypts')
 
 //SESSION
 app.use(
@@ -33,8 +33,9 @@ app.use(express.urlencoded({ extended: true }));
 
 //PUBLIC
 app.use(express.static(__dirname + "/public"));
-app.use(passport.initialize())
+
 initializePassport()
+app.use(passport.initialize())
 app.use(passport.session())
 
 //ROUTES

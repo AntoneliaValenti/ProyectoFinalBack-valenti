@@ -4,9 +4,9 @@ const createHash = (password) => {
   let pass = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
   return pass
 }
-const isValid = (user, password) => {
+const isValidatePassword = (user, password) => {
   let decrypt = bcrypt.compareSync(password, user.passwordDb)
   return decrypt
 }
 
-module.exports = { createHash, isValid }
+module.exports = { createHash, isValidatePassword }

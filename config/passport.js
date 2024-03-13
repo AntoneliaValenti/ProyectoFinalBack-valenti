@@ -69,4 +69,4 @@ const initializePassport = () => {
 
 
 
-module.exports = {  initializePassport } //initPassport,
+module.exports = {  initPassport, initializePassport } //
