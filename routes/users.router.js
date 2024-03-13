@@ -11,12 +11,12 @@ route.post(
   }),
   async (req, res) => {
     try {
-      res.redirect("/api/views/products");
+      res.redirect('/api/products')
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
-);
+)
 
 
 route.post(
@@ -26,9 +26,9 @@ route.post(
   }),
   (req, res) => {
     try {
-      res.redirect("/api/views/login");
+      res.redirect("/api/views/login")
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   }
 );
@@ -37,11 +37,15 @@ route.get('/failedRegister', (req, res) => {
   res.send('Failed user register')
 })
 
-route.get("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) res.send("Failed Logout");
-    res.send("Logout Ok").reditect("/login");
-  });
-});
 
-module.exports = route;
+route.get("/logout", (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      err ? res.send(err) : res.redirect("/api/views/login")
+    });
+  } catch (err) {
+    console.error(err)
+  }
+})
+
+module.exports = route
