@@ -6,8 +6,8 @@ route.get('/github', passport.authenticate("github", {}), (req, res)=>{})
 route.get('/', passport.authenticate("github", {}), (req, res)=>{
 
     
-    // res.setHeader('Content-Type', 'application/json')
-    // res.status(200).json({payload:"ok"})
+    res.setHeader('Content-Type', 'application/json')
+     res.status(200).json({payload:"ok"})
 })
 
 

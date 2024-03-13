@@ -11,7 +11,7 @@ route.post(
   }),
   async (req, res) => {
     try {
-      res.redirect('/api/products')
+      res.redirect('/api/allProducts')
     } catch (err) {
       console.error(err)
     }

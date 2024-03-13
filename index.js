@@ -5,7 +5,7 @@ const MongoStorage = require("connect-mongo");
 const prodRoute = require("./routes/products.routes");
 const handlebars = require("express-handlebars");
 const passport = require("passport");
-const { initializePassport} = require("./config/passport");
+const { initializePassport } = require("./config/passport");
 const Database = require("./dao/db/index");
 const cartRoute = require("./routes/cart.routes");
 const session = require("express-session")
@@ -39,19 +39,19 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //ROUTES
-app.use("/api/products", prodRoute);
-app.use("/api/cart", cartRoute);
-app.use("/api/view", viewRoute);
-app.use("/api/session", usersRoute);
+app.use("/api/products", prodRoute)
+app.use("/api/cart", cartRoute)
+app.use("/api/view", viewRoute)
+app.use("/api/session", usersRoute)
 app.use("/api/sessions", sessionRouter)
 
 //ENGINE
 app.engine("handlebars", handlebars.engine()); //inicializar
-app.set("views", __dirname + "/views"); //
-app.set("view engine", "handlebars");
+app.set("views", __dirname + "/views") //
+app.set("view engine", "handlebars")
 
 app.listen(PORT, () => {
-  console.log(`server run on port ${PORT}`);
+  console.log(`server run on port ${PORT}`)
   //ejecuta db
-  Database.connect();
-});
+  Database.connect()
+})

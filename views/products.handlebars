@@ -1,0 +1,14 @@
+<div class="container">
+    <div>
+        <h1>E-COMMERCE</h1>
+    </div>
+
+    <div id="caja" class="caja">
+        <h1>Nuestros productos:</h1>
+        {{#each products}}
+            <p>{{this.Product}}</p>
+        {{/each}}
+    </div>
+
+    <button onclick="agregarProductoAlCarrito()">Agregar Producto</button>
+</div>
