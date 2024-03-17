@@ -4,9 +4,7 @@ const route = new Router()
 const passport = require("passport")
 
 
-route.post(
-  "/login",
-  passport.authenticate("login", {
+route.post("/login", passport.authenticate("login", {
     failureMessage: "Error, usuario y/o contraseña incorrectos",
   }),
   async (req, res) => {
@@ -19,9 +17,7 @@ route.post(
 )
 
 
-route.post(
-  "/register",
-  passport.authenticate("register", {
+route.post("/register", passport.authenticate("register", {
     failureMessage: "Error, usuario ya existe",
   }),
   (req, res) => {

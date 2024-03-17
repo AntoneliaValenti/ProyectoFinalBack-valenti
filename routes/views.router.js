@@ -16,4 +16,8 @@ route.get("/cart", (req, res) => {
   res.render("cart");
 });
 
+// route.get("/loginGHub", (req, res) => {
+//   res.render("github");
+// });
+
 module.exports = route;

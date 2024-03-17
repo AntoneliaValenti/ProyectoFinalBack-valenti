@@ -13,26 +13,29 @@ const initPassport = () => {
             clientSecret: "3d9f377be3f7ec775fb7de84fdcf2d3a3d282cc2",
             callbackURL: "http://localhost:8080/api/view/loginGHub"
         },
-        async(accesToken, refresToken, profile, done)=>{
-            try{
-                //console.log(profile)    
-                let {name, mail}=profile._json
-                let usuario=await userModel.findOne({mail})
-                if(!usuario){
-                    usuario=await userModel.create(
-                        {
-                            nombre: name, mail, github: profile
-                        }
-                    )
+        async(accesToken, refresToken, profile, done) => {
+            try {
+                let { name, mail } = profile._json;
+                let usuario = await userModel.findOne({ mail })
+                if (!usuario) {
+                    usuario = await userModel.create({
+                        First_name: name,
+                        mail,
+                        role: "usser"
+                    });
                 }
-            
+                done(null, usuario)
             } catch (error) {
-                return done (error)
+                done(error)
             }
         }
     ))
+    
 
 }
+
+
+
 passport.serializeUser((usuario, done) =>{
     done(null, usuario)
 })
@@ -42,31 +45,35 @@ passport.deserializeUser((usuario, done) =>{
 
 const initializePassport = () => {
 
-    passport.use('resgister', new LocalStrategy(
-        {usernameField:'mail', passReqToCallback: true},
+    passport.use('register', new LocalStrategy(
+        { usernameField:'mail', passReqToCallback: true },
         async (req, username, password, done) => {
-            try{
+            try {
                 let userData = req.body
-                let user = await userModel.findOne({mail: username})
-                if(user){
-                    done('Error, usuario ya existe')
+                let user = await userModel.findOne({ mail: username })
+                if (user) {
+                    return done('Error, usuario ya existe')
                 }
                 let userNew = {
-                    name: userData.name,
+                    First_name: userData.name,
+                    last_name: userData.lastname,
                     mail: username,
-                    lastname: userData.lastname,
-                    password: createHash(userData.passport)
-                }
+                    age: userData.age,
+                    password: createHash(userData.password),
+                    role: "usser"
+                };
                 let result = await userModel.create(userNew)
                 done(null, result)
             } catch(error) {
                 done('Error, al crear el usuario' + error)
             }
         }
-    ))    
+    ))
+    
+    
 }
 
 
 
 
-module.exports = {  initPassport, initializePassport } //
+module.exports = {  initPassport, initializePassport  } //
