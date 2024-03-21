@@ -17,7 +17,7 @@ route.post("/login", passport.authenticate("login", {
   }),
   async (req, res) => {
     try {
-      res.ect('/api/allProducts')
+      res.ect('/api/current')
     } catch (err) {
       console.error(err)
     }
@@ -40,6 +40,7 @@ route.post("/register", passport.authenticate("register", {
 route.get('/failedRegister', (req, res) => {
   res.send('Failed user register')
 })
+
 
 
 

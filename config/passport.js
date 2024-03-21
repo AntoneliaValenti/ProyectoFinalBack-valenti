@@ -51,13 +51,14 @@ const initializePassport = () => {
         async (req, username, password, done) => {
             try {
                 let userData = req.body;
-                let user = await userModel.findOne({ mail: username });
+                let user = await userModel.findOne({ mail: username })
                 if (user) {
-                    return done('Error, usuario ya existe');
+                    return done('Error, usuario ya existe')
                 }
 
                 // Crear el carrito para el nuevo usuario
-                let newCart = await Cart.create({ date: new Date(), products: [] });
+                let newCart = await Cart.create({ date: new Date(), products: [] })
+            
 
                 // Crear el usuario
                 let userNew = {
@@ -67,18 +68,18 @@ const initializePassport = () => {
                     age: userData.age,
                     password: createHash(userData.password),
                     role: "user",
-                    cartId: newCart._id  // Asociar el ID del carrito al usuario
-                };
+                    cart: newCart._id  
+                }
 
-                let newUser = await userModel.create(userNew);
+                let newUser = await userModel.create(userNew)
 
                 done(null, newUser);
             } catch (error) {
-                done('Error al crear el usuario: ' + error);
+                done('Error al crear el usuario: ' + error)
             }
         }
-    ));
+    ))
 }
 
 
-module.exports = {  initPassport, initializePassport  } //
+module.exports = {  initPassport, initializePassport  } 
