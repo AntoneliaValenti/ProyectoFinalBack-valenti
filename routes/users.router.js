@@ -22,7 +22,7 @@ route.post("/register", passport.authenticate("register", {
   }),
   (req, res) => {
     try {
-      res.redirect("/api/views/login")
+      res.redirect("/api/products/allProducts")
     } catch (err) {
       console.error(err)
     }

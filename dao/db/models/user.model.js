@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 
 const UsersSchema = new mongoose.Schema({
-    First_name: {
+    firstname: {
         type: String,
         required: true
-    }, 
-    last_name: {
+    },
+    lastname: {
         type: String,
         required: true
-    }, 
+    },
     mail: {
         type: String,
         required: true
@@ -21,15 +21,14 @@ const UsersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    cartId:{
+    cart: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'cart',
-        required: true
+        ref: 'Cart'  // Referencia al modelo del carrito
     },
     role: {
-        type:String,
-        enum:["admin", "usser"],
-        default:"usser"
+        type: String,
+        enum: ["admin", "user"],
+        default: "user"
     }
 })
 

@@ -1,17 +1,15 @@
-const Cart = require ('../db/models/cart.model')
+const Cart = require('../db/models/cart.model');
 
 class CartManagerMongo {
-    async addCart(carrito){
+    async createCart(date, products) {
         try {
-            await Cart.create(carrito)
-            return "Carrito creado con exito"
-        } catch(err) {
-            return 'error: ' + err
+            const newCart = await Cart.create({ date, products });
+            return newCart;
+        } catch (error) {
+            console.error('Error al crear el carrito:', error);
+            throw error;
         }
     }
-
-
- 
-
 }
-module.exports = CartManagerMongo
+
+module.exports = CartManagerMongo;

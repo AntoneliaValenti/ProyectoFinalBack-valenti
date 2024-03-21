@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const CartsSchema = new mongoose.Schema({
+const CartSchema = new mongoose.Schema({
     date: {
         type: String,
         required: true
@@ -16,10 +16,10 @@ const CartsSchema = new mongoose.Schema({
     }
 })
 
-CartsSchema.pre('findOne', function(){
+CartSchema.pre('findOne', function(){
     this.populate('products.product')
 })
 
-const Cart = mongoose.model('Cart', CartsSchema)
+const Cart = mongoose.model('Carrito', CartSchema)
 
 module.exports = Cart
