@@ -5,13 +5,12 @@ const MongoStorage = require("connect-mongo");
 const prodRoute = require("./routes/products.routes");
 const handlebars = require("express-handlebars");
 const passport = require("passport");
-const { initializePassport, initPassportGit, initPassport  } = require("./config/passport");
+const { initializePassport, initPassportGit, initPassport  } = require("./config/passport.js");
 const Database = require("./dao/db/index");
 const cartRoute = require("./routes/cart.routes");
 const session = require("express-session")
 const usersRoute = require("./routes/users.router");
-const viewRoute = require("./routes/views.router");
-const sessionRouter = require('./routes/session.router')
+const viewRoute = require("./routes/views.router")
 //const {createHash} = require('./utils/bcrypts')
 
 //SESSION
@@ -39,13 +38,13 @@ initPassportGit()
 initializePassport()
 initPassport()
 app.use(passport.initialize())
+app.use(passport.session())
 
 //ROUTES
 app.use("/api/products", prodRoute)
 app.use("/api/cart", cartRoute)
 app.use("/api/view", viewRoute)
 app.use("/api/session", usersRoute)
-app.use("/api/sessions", sessionRouter)
 
 //ENGINE
 app.engine("handlebars", handlebars.engine()); //inicializar

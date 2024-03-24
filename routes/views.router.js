@@ -21,7 +21,7 @@ route.get("/loginGHub", (req, res) => {
   res.render("github")
 })
 
-route.get("/current", (req, res) => {
+route.get("/profile", (req, res) => {
   res.render("current")
 })
 

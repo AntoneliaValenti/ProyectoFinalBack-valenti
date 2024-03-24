@@ -12,9 +12,9 @@ const initPassportGit = () => {
         {
             clientID: "Iv1.3b69f5c084e4d724",
             clientSecret: "3d9f377be3f7ec775fb7de84fdcf2d3a3d282cc2",
-            callbackURL: "http://localhost:8080/api/view/loginGHub"
+            callbackURL: "http://localhost:8080/api/sessions/loginGHub"
         },
-        async (accesToken, refresToken, profile, done) => {
+        async (accessToken, refreshToken, profile, done) => {
             try {
                 let { name, mail } = profile._json;
                 let usuario = await userModel.findOne({ mail })
@@ -34,15 +34,6 @@ const initPassportGit = () => {
 
 
 }
-
-
-
-passport.serializeUser((usuario, done) => {
-    done(null, usuario)
-})
-passport.deserializeUser((usuario, done) => {
-    done(null, usuario)
-})
 
 
 const initializePassport = () => {
@@ -105,6 +96,13 @@ const initPassport = () => {
         }
     ))
 }
+
+passport.serializeUser((usuario, done) => {
+    done(null, usuario)
+})
+passport.deserializeUser((usuario, done) => {
+    done(null, usuario)
+})
 
 
 module.exports = { initPassportGit, initializePassport, initPassport } 

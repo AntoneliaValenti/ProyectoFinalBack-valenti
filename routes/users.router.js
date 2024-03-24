@@ -9,7 +9,7 @@ route.post("/login", passport.authenticate("login", {
   }),
   async (req, res) => {
     try {
-      res.redirect('/api/sessions/current')
+      res.redirect('/api/view/profile')
     } catch (err) {
       console.error(err)
     }
@@ -22,7 +22,7 @@ route.post("/register", passport.authenticate("register", {
   }),
   (req, res) => {
     try {
-      res.redirect("/api/sessions/current")
+      res.redirect("/api/view/profile")
     } catch (err) {
       console.error(err)
     }
@@ -43,5 +43,25 @@ route.get("/logout", (req, res) => {
     console.error(err)
   }
 })
+
+route.get('/github', passport.authenticate("github", {}), (req, res) => { })
+route.get('/loginGHub', passport.authenticate("github", {}), (req, res) => {
+  res.setHeader('Content-Type', 'application/json')
+  return res.status(200).json({ payload:"ok"})
+})
+
+
+route.get('/profile', (req, res) => {
+  if (req.isAuthenticated()) {
+      res.render('current', { userData: req.user })
+   } else {
+      res.redirect('/api/views/profile')
+  }
+})
+
+route.get("/loginGHub", (req, res) => {
+  res.render("github")
+})
+
 
 module.exports = route
