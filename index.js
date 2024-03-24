@@ -5,7 +5,7 @@ const MongoStorage = require("connect-mongo");
 const prodRoute = require("./routes/products.routes");
 const handlebars = require("express-handlebars");
 const passport = require("passport");
-const { initializePassport, initPassport  } = require("./config/passport");
+const { initializePassport, initPassportGit, initPassport  } = require("./config/passport");
 const Database = require("./dao/db/index");
 const cartRoute = require("./routes/cart.routes");
 const session = require("express-session")
@@ -35,8 +35,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 
 
-initPassport()
+initPassportGit()
 initializePassport()
+initPassport()
 app.use(passport.initialize())
 
 //ROUTES

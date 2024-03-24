@@ -9,7 +9,7 @@ route.post("/login", passport.authenticate("login", {
   }),
   async (req, res) => {
     try {
-      res.redirect('/api/allProducts')
+      res.redirect('/api/sessions/current')
     } catch (err) {
       console.error(err)
     }
@@ -22,7 +22,7 @@ route.post("/register", passport.authenticate("register", {
   }),
   (req, res) => {
     try {
-      res.redirect("/api/products/allProducts")
+      res.redirect("/api/sessions/current")
     } catch (err) {
       console.error(err)
     }

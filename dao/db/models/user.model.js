@@ -23,7 +23,7 @@ const UsersSchema = new mongoose.Schema({
     },
     cart: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Cart'  // Referencia al modelo del carrito
+        ref: 'Cart'  
     },
     role: {
         type: String,
