@@ -17,12 +17,9 @@ route.get("/cart", (req, res) => {
   res.render("cart")
 })
 
-route.get("/loginGHub", (req, res) => {
-  res.render("github")
-})
-
 route.get("/profile", (req, res) => {
-  res.render("current")
+  const { firstname, lastname, mail, age, role } = req.session.passport.user
+  res.render("current", { firstname, lastname, mail, age, role })
 })
 
 module.exports = route;

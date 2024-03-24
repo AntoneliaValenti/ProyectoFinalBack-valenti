@@ -5,7 +5,7 @@ const createHash = (password) => {
   return pass
 }
 const isValidatePassword = (user, password) => {
-  let decrypt = bcrypt.compareSync(password, user.passwordDb)
+  let decrypt = bcrypt.compareSync(user, password)
   return decrypt
 }
 

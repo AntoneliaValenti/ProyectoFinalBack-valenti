@@ -22,7 +22,7 @@ route.post("/register", passport.authenticate("register", {
   }),
   (req, res) => {
     try {
-      res.redirect("/api/view/profile")
+      res.redirect("/api/view/login")
     } catch (err) {
       console.error(err)
     }
@@ -59,9 +59,9 @@ route.get('/profile', (req, res) => {
   }
 })
 
-route.get("/loginGHub", (req, res) => {
-  res.render("github")
-})
+// route.get("/loginGHub", (req, res) => {
+//   res.render("github")
+// })
 
 
 module.exports = route

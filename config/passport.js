@@ -6,7 +6,8 @@ const Cart = require('../dao/db/models/cart.model')
 const { createHash, isValidatePassword } = require('../utils/bcrypts')
 
 
-const initPassportGit = () => {
+
+const initializePassport = () => {
 
     passport.use("github", new github.Strategy(
         {
@@ -16,12 +17,12 @@ const initPassportGit = () => {
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
-                let { name, mail } = profile._json;
-                let usuario = await userModel.findOne({ mail })
+                let { name, email } = profile._json;
+                let usuario = await userModel.findOne({ mail: email })
                 if (!usuario) {
                     usuario = await userModel.create({
                         First_name: name,
-                        mail,
+                        email,
                         role: "user"
                     });
                 }
@@ -32,11 +33,6 @@ const initPassportGit = () => {
         }
     ))
 
-
-}
-
-
-const initializePassport = () => {
     passport.use('register', new LocalStrategy(
         { usernameField: 'mail', passReqToCallback: true },
         async (req, username, password, done) => {
@@ -70,10 +66,7 @@ const initializePassport = () => {
             }
         }
     ))
-}
 
-
-const initPassport = () => {
     passport.use('login', new LocalStrategy(
         { usernameField: 'mail', passReqToCallback: true },
         async (req, username, password, done) => {
@@ -84,11 +77,11 @@ const initPassport = () => {
                     return done(null, false, { message: 'Usuario no encontrado' })
                 }
 
-                const isMatch = await bcrypt.compare(password, user.password);
+                const isMatch = isValidatePassword(password, user.password);
                 if (!isMatch) {
                     return done(null, false, { message: 'Contraseña incorrecta' })
                 }
-
+                console.log(user)
                 return done(null, user);
             } catch (error) {
                 return done(error);
@@ -97,12 +90,13 @@ const initPassport = () => {
     ))
 }
 
-passport.serializeUser((usuario, done) => {
-    done(null, usuario)
+
+passport.serializeUser((user, done) => {
+    done(null, user)
 })
-passport.deserializeUser((usuario, done) => {
-    done(null, usuario)
+passport.deserializeUser((user, done) => {
+    done(null, user)
 })
 
 
-module.exports = { initPassportGit, initializePassport, initPassport } 
+module.exports = {initializePassport } 
