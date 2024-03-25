@@ -45,7 +45,7 @@ route.get("/logout", (req, res) => {
 })
 
 route.get('/github', passport.authenticate("github", {}), (req, res) => { })
-route.get('/loginGHub', passport.authenticate("github", {}), (req, res) => {
+route.get('/cbGithub', passport.authenticate("github", {}), (req, res) => {
   res.setHeader('Content-Type', 'application/json')
   return res.status(200).json({ payload:"ok"})
 })

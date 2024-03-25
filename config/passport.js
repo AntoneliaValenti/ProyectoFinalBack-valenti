@@ -11,12 +11,13 @@ const initializePassport = () => {
 
     passport.use("github", new github.Strategy(
         {
-            clientID: "Iv1.3b69f5c084e4d724",
-            clientSecret: "3d9f377be3f7ec775fb7de84fdcf2d3a3d282cc2",
-            callbackURL: "http://localhost:8080/api/sessions/loginGHub"
+            clientID: " Iv1.a7479059cda91d0e",
+            clientSecret: "885875ab3f3ebe025b341dda0c9ce6279226fec1",
+            callbackURL: "http://localhost:8080/api/session/cbGithub"
         },
-        async (accessToken, refreshToken, profile, done) => {
+        async (accessToken, refreshToken, profile, done)=>{
             try {
+                console.log(profile);
                 let { name, email } = profile._json;
                 let usuario = await userModel.findOne({ mail: email })
                 if (!usuario) {
@@ -26,9 +27,9 @@ const initializePassport = () => {
                         role: "user"
                     });
                 }
-                done(null, usuario)
+                done(null, user)
             } catch (error) {
-                done(error)
+                return done(error)
             }
         }
     ))
@@ -81,7 +82,7 @@ const initializePassport = () => {
                 if (!isMatch) {
                     return done(null, false, { message: 'Contraseña incorrecta' })
                 }
-                console.log(user)
+                //console.log(user)
                 return done(null, user);
             } catch (error) {
                 return done(error);
@@ -99,4 +100,5 @@ passport.deserializeUser((user, done) => {
 })
 
 
-module.exports = {initializePassport } 
+module.exports = {initializePassport }   
+

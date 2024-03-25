@@ -1,15 +1,15 @@
-const express = require("express");
-const PORT = 8080 || process.env.PORT;
-const app = express();
-const MongoStorage = require("connect-mongo");
-const prodRoute = require("./routes/products.routes");
-const handlebars = require("express-handlebars");
-const passport = require("passport");
-const { initializePassport } = require("./config/passport.js");
-const Database = require("./dao/db/index");
-const cartRoute = require("./routes/cart.routes");
+const express = require("express")
+const PORT = 8080 || process.env.PORT
+const app = express()
+const MongoStorage = require("connect-mongo")
+const prodRoute = require("./routes/products.routes")
+const handlebars = require("express-handlebars")
+const passport = require("passport")
+const { initializePassport } = require("./config/passport.js")
+const Database = require("./dao/db/index")
+const cartRoute = require("./routes/cart.routes")
 const session = require("express-session")
-const usersRoute = require("./routes/users.router");
+const usersRoute = require("./routes/users.router")
 const viewRoute = require("./routes/views.router")
 //const {createHash} = require('./utils/bcrypts')
 
@@ -26,12 +26,12 @@ app.use(
   })
 )
 //MIDLEWARE(formatea el body)
-app.use(express.json());
+app.use(express.json())
 // Otro middleware para analizar datos de formulario
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }))
 
 //PUBLIC
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public"))
 
 
 initializePassport()
@@ -45,7 +45,7 @@ app.use("/api/view", viewRoute)
 app.use("/api/session", usersRoute)
 
 //ENGINE
-app.engine("handlebars", handlebars.engine()); //inicializar
+app.engine("handlebars", handlebars.engine()) //inicializar
 app.set("views", __dirname + "/views") //
 app.set("view engine", "handlebars")
 
