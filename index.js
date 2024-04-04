@@ -1,18 +1,18 @@
 const express = require("express")
-const dotenv = require('dotenv')
+const MongoStorage = require("connect-mongo")
+require('dotenv').config()
 const port = process.env.PORT
 const host = process.env.MONGOURL
 const app = express()
-const MongoStorage = require("connect-mongo")
-const prodRoute = require("./routes/products.routes")
 const handlebars = require("express-handlebars")
 const passport = require("passport")
 const { initializePassport } = require("./config/passport.js")
 const Database = require("./dao/db/index")
+const prodRoute = require("./routes/products.routes")
 const cartRoute = require("./routes/cart.routes")
-const session = require("express-session")
 const usersRoute = require("./routes/users.router")
 const viewRoute = require("./routes/views.router")
+const session = require("express-session")
 //const {createHash} = require('./utils/bcrypts')
 
 app.use(
@@ -50,7 +50,7 @@ app.engine("handlebars", handlebars.engine()) //inicializar
 app.set("views", __dirname + "/views") //
 app.set("view engine", "handlebars")
 
-dotenv.config({ path: "/envExample" })
+//dotenv.config()
 
 app.listen(port, () => {
   console.log(`server run on port ${port}`)
