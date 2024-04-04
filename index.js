@@ -1,5 +1,7 @@
 const express = require("express")
-const PORT = 8080 || process.env.PORT
+const dotenv = require('dotenv')
+const port = process.env.PORT
+const host = process.env.MONGOURL
 const app = express()
 const MongoStorage = require("connect-mongo")
 const prodRoute = require("./routes/products.routes")
@@ -13,18 +15,17 @@ const usersRoute = require("./routes/users.router")
 const viewRoute = require("./routes/views.router")
 //const {createHash} = require('./utils/bcrypts')
 
-//SESSION
 app.use(
   session({
     store: MongoStorage.create({
-      mongoUrl:
-        "mongodb+srv://avalenti3003:Teclado3003@proyectocoder.wcbxmpy.mongodb.net/eccomerce",
+      mongoUrl: host,
     }),
-    secret: "secretCoder",
+    secret: "secretCoder", 
     resave: true,
     saveUninitialized: true,
   })
 )
+
 //MIDLEWARE(formatea el body)
 app.use(express.json())
 // Otro middleware para analizar datos de formulario
@@ -49,8 +50,10 @@ app.engine("handlebars", handlebars.engine()) //inicializar
 app.set("views", __dirname + "/views") //
 app.set("view engine", "handlebars")
 
-app.listen(PORT, () => {
-  console.log(`server run on port ${PORT}`)
+dotenv.config({ path: "/envExample" })
+
+app.listen(port, () => {
+  console.log(`server run on port ${port}`)
   //ejecuta db
   Database.connect()
 })

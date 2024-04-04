@@ -2,7 +2,7 @@ const express = require('express')
 const { Router } = require('express')
 const Products = require('../dao/db/models/product.model')
 const route = new Router()
-const ProductManagerMongo = require('../dao/db/productManagerMongo')
+const ProductManagerMongo = require('../dao/services/productManagerMongo')
 const productmanagerm = new ProductManagerMongo()
 
 

@@ -2,7 +2,7 @@ const express = require('express')
 const { Router } = require('express')
 const Cart = require('../dao/db/models/cart.model')
 const route = new Router()
-const CartManagerMongo = require('../dao/db/cartManagerMongo')
+const CartManagerMongo = require('../dao/services/cartManagerMongo')
 const cartmanagerm = new CartManagerMongo()
 
 

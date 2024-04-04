@@ -11,23 +11,23 @@ const initializePassport = () => {
 
     passport.use("github", new github.Strategy(
         {
-            clientID: " Iv1.a7479059cda91d0e",
-            clientSecret: "885875ab3f3ebe025b341dda0c9ce6279226fec1",
+            clientID: "Iv1.17badf82ffbf8bd7",
+            clientSecret: "57dd79874dde6e581b3375c191af98bcbda554fb",
             callbackURL: "http://localhost:8080/api/session/cbGithub"
         },
         async (accessToken, refreshToken, profile, done)=>{
             try {
                 console.log(profile);
-                let { name, email } = profile._json;
-                let usuario = await userModel.findOne({ mail: email })
+                let { name, mail } = profile._json;
+                let usuario = await userModel.findOne({ mail })
                 if (!usuario) {
                     usuario = await userModel.create({
                         First_name: name,
-                        email,
+                        mail,
                         role: "user"
                     });
-                }
-                done(null, user)
+                } 
+                done(null, usuario)
             } catch (error) {
                 return done(error)
             }
