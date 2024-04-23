@@ -1,8 +1,8 @@
 const passport = require('passport')
 const github = require('passport-github2')
 const LocalStrategy = require("passport-local").Strategy
-const userModel = require('../dao/db/models/user.model')
-const Cart = require('../dao/db/models/cart.model')
+const userModel = require('../../modelo/dao/db/models/user.model')
+const Cart = require('../../modelo/dao/db/models/cart.model')
 const { createHash, isValidatePassword } = require('../utils/bcrypts')
 
 
@@ -91,7 +91,7 @@ const initializePassport = () => {
     ))
 }
 
-
+ 
 passport.serializeUser((user, done) => {
     done(null, user)
 })

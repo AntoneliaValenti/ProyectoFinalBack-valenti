@@ -1,9 +1,12 @@
 const express = require('express')
 const { Router } = require('express')
-const Cart = require('../dao/db/models/cart.model')
+const Cart = require('../modelo/dao/db/models/cart.model')
+const Product = require('../modelo/dao/db/models/product.model')
+const Ticket = require('../modelo/dao/db/models/ticket.model')
 const route = new Router()
-const CartManagerMongo = require('../dao/services/cartManagerMongo')
+const CartManagerMongo = require('../modelo/services/cartManagerMongo')
 const cartmanagerm = new CartManagerMongo()
+const { v4: uuidv4 } = require('uuid')
 
 
 //funciona
@@ -48,6 +51,86 @@ route.delete("/:pid", async (cartId) => {
         return 'Error: ' + err.message
       }
 })
+
+//Agregar prod al carrito
+route.post('/agregarAlCarrito', async (req, res) => {
+  const productId = req.body.productId
+  const cartId = req.body.cartId
+
+  try {
+      const product = await Product.findById(productId)
+
+      if (!product) {
+          return res.status(404).json({ error: 'Producto no encontrado' })
+      }
+
+      let cart = await Cart.findById(cartId)
+
+      if (!cart) {
+          return res.status(404).json({ error: 'Carrito no encontrado' })
+      }
+
+      cart.products.push({ product: productId })
+
+      await cart.save()
+
+      res.status(200).json({ success: true, message: 'Producto agregado al carrito correctamente', cart })
+  } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error)
+      res.status(500).json({ error: 'Error interno del servidor' })
+  }
+})
+
+route.post('/:cid/purchase', async (req, res) => {
+  const { cid: cartId } = req.params
+
+  try {
+      const cart = await Carrito.findById(cartId)
+
+      if (!cart) {
+          return res.status(404).json({ error: 'Carrito no encontrado' })
+      }
+
+      // Crea ticket 
+      const ticket = new Ticket({
+          carrito: cart._id,
+          code: generateUniqueCode(),
+          purchase_datetime: new Date(),
+          amount: calculateTotalItems(cart),
+          purchaser: req.user.email 
+      })
+
+      await ticket.save()
+
+      await cart.remove()
+
+      res.status(200).json({ success: true, message: 'Compra realizada correctamente', ticket })
+  } catch (error) {
+      console.error('Error al realizar la compra:', error)
+      res.status(500).json({ error: 'Error interno del servidor' })
+  }
+})
+
+function generateUniqueCode() {
+  return uuidv4()
+}
+
+
+function calculateTotalItems(cart) {
+  let totalItems = 0
+
+  cart.products.forEach(product => {
+      totalItems += product.quantity
+  })
+
+  return totalItems
+}
+
+ 
+
+
+
+
 
 // //Funcion encontrar producto dentro de un carrito:
 // const findCart = async () => {

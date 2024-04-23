@@ -1,4 +1,4 @@
-const Cart = require('../db/models/cart.model');
+const Cart = require('../dao/db/models/cart.model');
 
 class CartManagerMongo {
     async createCart(date, products) {

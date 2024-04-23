@@ -1,4 +1,4 @@
-const User = require("../db/models/user.model");
+const User = require("../dao/db/models/user.model");
 
 class SessionManagerMongo {
   constructor() {

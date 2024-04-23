@@ -1,24 +1,25 @@
 const express = require('express')
 const { Router } = require('express')
-const Products = require('../dao/db/models/product.model')
+const Product = require('../modelo/dao/db/models/product.model')
 const route = new Router()
-const ProductManagerMongo = require('../dao/services/productManagerMongo')
+const ProductManagerMongo = require('../modelo/services/productManagerMongo')
 const productmanagerm = new ProductManagerMongo()
 
 
 //funciona
 route.get('/allProducts', async (req, res)=> {
-  try {
-    let resp = await Products.find()
-    res.send({
-      msg: 'Productos encontrados',
-      data: resp
-    })
-  }catch (err) {
-    res.status(400).send({ error: err.message })
-  }
- 
+    try {
+      let resp = await Product.find()
+      res.render('product', { 
+        msg: 'Productos encontrados',
+        data: resp
+      })
+    } catch (err) {
+      res.status(400).send({ error: err.message })
+    }
+
 })
+
 
 //funciona
 route.post('/Products', async (req, res) => {
