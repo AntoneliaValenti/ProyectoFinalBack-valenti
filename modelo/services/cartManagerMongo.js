@@ -12,4 +12,28 @@ class CartManagerMongo {
     }
 }
 
+function agregarProductoAlCarrito(productId) {
+    fetch('http://localhost:8080/api/products/agregarAlCarrito', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productId })
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('Producto agregado al carrito correctamente')
+
+            } else {
+                console.error('Error al agregar el producto al carrito')
+
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar la solicitud:', error)
+
+        })
+}
+agregarProductoAlCarrito()
+
 module.exports = CartManagerMongo;
