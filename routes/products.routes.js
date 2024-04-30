@@ -4,7 +4,8 @@ const Product = require('../modelo/dao/db/models/product.model')
 const route = new Router()
 const ProductManagerMongo = require('../modelo/services/productManagerMongo')
 const productmanagerm = new ProductManagerMongo()
-
+const { requireAdmin } = require('../middleware/auth')
+const { requireUser } = require('../middleware/auth')
 
 //funciona
 route.get('/allProducts', async (req, res)=> {
@@ -35,7 +36,7 @@ route.post('/Products', async (req, res) => {
 
 
 //funciona
-route.delete("/:pid", async (req, res) => {
+route.delete("/:pid",  async (req, res) => {
   try {
     const { pid } = req.params
      const resp = await productmanagerm.deleteProduct(pid)

@@ -1,15 +1,6 @@
 const mongoose = require('mongoose')
 
 const TicketSchema = new mongoose.Schema({
-    Id: {
-        type:[
-            {carrito: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Carrito'
-            }
-            }
-        ]
-    },
     code: {
         type: String,
         unique: true,

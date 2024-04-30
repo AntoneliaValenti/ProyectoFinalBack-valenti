@@ -13,7 +13,11 @@ const CartSchema = new mongoose.Schema({
             }
             }
         ]
-    }
+    },
+    amount: {
+        type: Number,
+        default: 0,
+      }
 })
 
 CartSchema.pre('findOne', function(){

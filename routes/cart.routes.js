@@ -7,20 +7,21 @@ const route = new Router()
 const CartManagerMongo = require('../modelo/services/cartManagerMongo')
 const cartmanagerm = new CartManagerMongo()
 const { v4: uuidv4 } = require('uuid')
-
+const { requireAdmin } = require('../middleware/auth')
+const { requireUser } = require('../middleware/auth')
 
 //funciona
-route.get('/allCart', async (req, res) => {
-    try {
-      let resp = await Cart.find()
-      res.send({
-        msg: 'Carritos encontrados',
-        data: resp
-      })
-    } catch (err) {
-      res.status(400).send({ error: err.message })
-    }
-  })
+route.get('/allCart',  async (req, res) => {
+  try {
+    let resp = await Cart.find()
+    res.send({
+      msg: 'Carritos encontrados',
+      data: resp
+    })
+  } catch (err) {
+    res.status(400).send({ error: err.message })
+  }
+})
 
 //funciona
 route.post('/Cart1', async (req, res) => {
@@ -35,79 +36,80 @@ route.post('/Cart1', async (req, res) => {
 })
 
 
-//funciona
-route.delete("/:pid", async (cartId) => {
-    try {
-        const cart = await Cart.findById(cartId)
-        if (!cart) {
-          throw new Error('Carrito no encontrado')
-        }
-  
-        cart.items = []
-        await cart.save()
-  
-        return 'Contenido del carrito eliminado'
-      } catch (err) {
-        return 'Error: ' + err.message
-      }
-})
 
-//Agregar prod al carrito
-route.post('/agregarAlCarrito', async (req, res) => {
-  const productId = req.body.productId
-  const cartId = req.body.cartId
-
+//Agregar prod al carrito Funciona
+route.put('/agregarAlCarrito/:cartId/:productId', requireUser,  async (req, res) => {
   try {
-      const product = await Product.findById(productId)
-
-      if (!product) {
-          return res.status(404).json({ error: 'Producto no encontrado' })
-      }
-
-      let cart = await Cart.findById(cartId)
-
-      if (!cart) {
-          return res.status(404).json({ error: 'Carrito no encontrado' })
-      }
-
-      cart.products.push({ product: productId })
-
-      await cart.save()
-
-      res.status(200).json({ success: true, message: 'Producto agregado al carrito correctamente', cart })
+    let cartId = req.params.cartId
+    let productId = req.params.productId
+    let response = await cartmanagerm.agregarAlCarrito(cartId, productId)
+    if (response) {
+      res.status(201).send({
+        msg: `Producto agregado con éxito al carrito`,
+      });
+    } else {
+      res.status(404).send({
+        msg: `Carrito ${cartId} no encontrado`,
+      })
+    }
   } catch (error) {
-      console.error('Error al agregar el producto al carrito:', error)
-      res.status(500).json({ error: 'Error interno del servidor' })
+    console.error('Error al agregar el producto al carrito:', error)
   }
 })
 
+//Eliminar prod del carrito Funciona
+route.delete('/eliminarProducto/:cartId/:productId', async (req, res) => {
+  try {
+    let cartId = req.params.cartId
+    let productId = req.params.productId
+    let response = await cartmanagerm.eliminarDelCarrito(cartId, productId)
+    
+    if (response) {
+      res.status(201).send({
+        msg: `Producto eliminado con éxito`,
+      });
+    } else {
+      res.status(404).send({
+        msg: `Carrito ${cid} no encontrado o producto no existe`,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+})
+
+
 route.post('/:cid/purchase', async (req, res) => {
   const { cid: cartId } = req.params
+  const mail = req.params.user.mail
 
   try {
-      const cart = await Carrito.findById(cartId)
+    const cart = await Carrito.findById(cartId)
 
-      if (!cart) {
-          return res.status(404).json({ error: 'Carrito no encontrado' })
-      }
+    if (!cart) {
+      return res.status(404).json({ error: 'Carrito no encontrado' })
+    }
 
-      // Crea ticket 
-      const ticket = new Ticket({
-          carrito: cart._id,
-          code: generateUniqueCode(),
-          purchase_datetime: new Date(),
-          amount: calculateTotalItems(cart),
-          purchaser: req.user.email 
-      })
+    // Crea ticket 
+    const ticket = new Ticket({
+      carrito: cart._id,
+      code: generateUniqueCode(),
+      purchase_datetime: new Date(),
+      amount: calculateTotalItems(cart),
+      purchaser: mail
+    })
 
-      await ticket.save()
+    await ticket.save()
 
+    if (ticket) {
       await cart.remove()
 
       res.status(200).json({ success: true, message: 'Compra realizada correctamente', ticket })
+    } else {
+      res.status(500).json({ error: 'Error al crear el ticket' })
+    }
   } catch (error) {
-      console.error('Error al realizar la compra:', error)
-      res.status(500).json({ error: 'Error interno del servidor' })
+    console.error('Error al realizar la compra:', error)
   }
 })
 
@@ -120,14 +122,26 @@ function calculateTotalItems(cart) {
   let totalItems = 0
 
   cart.products.forEach(product => {
-      totalItems += product.quantity
+    totalItems += product.quantity
   })
 
   return totalItems
 }
 
- 
 
+route.put('/eliminarCarrito/:cid', async (req, res) => {
+  try {
+    const id = req.params.cartId
+    const response = await cartmanagerm.eliminarCart(id)
+    if (response) {
+      res.status(200).send({ msg: 'Carrito vacio' })
+    } else {
+      res.status(500).send({ msg: 'Error al vaciar carrito' })
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
 
 
 
@@ -153,7 +167,7 @@ function calculateTotalItems(cart) {
 //     try {
 //         // Obtener el carrito y los datos necesarios
 //         const cart = await Cart.findOne({ _id: '65f755ac6bc2ebcc918a2cb2' }).populate('products.product')
-        
+
 //         // Renderizar la plantilla con los datos
 //         res.send({data: cart})
 //     } catch (err) {

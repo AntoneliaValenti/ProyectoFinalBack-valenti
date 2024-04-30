@@ -1,39 +1,84 @@
-const Cart = require('../dao/db/models/cart.model');
+const Cart = require('../dao/db/models/cart.model')
+
 
 class CartManagerMongo {
     async createCart(date, products) {
         try {
-            const newCart = await Cart.create({ date, products });
-            return newCart;
+            const newCart = await Cart.create({ date, products })
+            return newCart
         } catch (error) {
-            console.error('Error al crear el carrito:', error);
+            console.error('Error al crear el carrito:', error)
             throw error;
         }
     }
-}
 
-function agregarProductoAlCarrito(productId) {
-    fetch('http://localhost:8080/api/products/agregarAlCarrito', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ productId })
-    })
-        .then(response => {
-            if (response.ok) {
-                console.log('Producto agregado al carrito correctamente')
-
+    async agregarAlCarrito(cartId, productId) {
+        try {
+          let cart = await Cart.findOne({ _id: cartId })
+          if (cart) {
+            const existingProduct = cart.products.find(
+              (prod) => prod.product._id.equals(productId)
+            );
+            if (existingProduct) {
+              existingProduct.amount++
             } else {
-                console.error('Error al agregar el producto al carrito')
-
+              cart.products.push({ product: productId, amount: 1 })
             }
-        })
-        .catch(error => {
-            console.error('Error al enviar la solicitud:', error)
+            await cart.save()
+            return true
+          } else {
+            return false
+          }
+        } catch (err) {
+          console.error(err)
+          return false
+        }
+    }
+      
+      
+    async eliminarDelCarrito(cartId, productId) {
+      try {
+        let cart = await Cart.findOne({ _id: cartId })
+        if (cart) {
+          const existingProduct = cart.products.find(
+            (prod) => prod.product._id.equals(productId)
+          );
+          if (existingProduct) {
+            if (existingProduct.amount > 1) {
+              existingProduct.amount--
+            } else {
+              cart.products = cart.products.filter(
+                (prod) => !prod.product._id.equals(productId)
+              );
+            }
+            await cart.save()
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      } catch (err) {
+        console.error(err)
+        return false
+      }
+    }
+    
 
-        })
+    async eliminarCart(id) {
+        try {
+          await Cart.updateOne({ _id: id }, { $set: { products: [] } })
+          return true
+        } catch (err) {
+          console.error(err)
+          return false
+        }
+      }
+    
+
 }
-agregarProductoAlCarrito()
 
-module.exports = CartManagerMongo;
+
+
+module.exports = CartManagerMongo
