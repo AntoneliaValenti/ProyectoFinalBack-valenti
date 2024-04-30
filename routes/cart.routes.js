@@ -11,7 +11,7 @@ const { requireAdmin } = require('../middleware/auth')
 const { requireUser } = require('../middleware/auth')
 
 //funciona
-route.get('/allCart',  async (req, res) => {
+route.get('/allCart', requireAdmin,  async (req, res) => {
   try {
     let resp = await Cart.find()
     res.send({
@@ -38,7 +38,27 @@ route.post('/Cart1', async (req, res) => {
 
 
 //Agregar prod al carrito Funciona
-route.put('/agregarAlCarrito/:cartId/:productId', requireUser,  async (req, res) => {
+route.put('/agregarAlCarrito/:cartId/:productId', requireUser, async (req, res) => {
+  try {
+      let cartId = req.params.cartId;
+      let productId = req.params.productId;
+      let response = await cartmanagerm.agregarAlCarrito(cartId, productId);
+      if (response) {
+          res.status(201).send({
+              msg: `Producto agregado con éxito al carrito`,
+          });
+      } else {
+          res.status(404).send({
+              msg: `Carrito ${cartId} no encontrado`,
+          });
+      }
+  } catch (error) {
+      console.error('Error al agregar el producto al carrito:', error);
+  }
+});
+
+
+async (req, res) => {
   try {
     let cartId = req.params.cartId
     let productId = req.params.productId
@@ -55,10 +75,10 @@ route.put('/agregarAlCarrito/:cartId/:productId', requireUser,  async (req, res)
   } catch (error) {
     console.error('Error al agregar el producto al carrito:', error)
   }
-})
+}
 
 //Eliminar prod del carrito Funciona
-route.delete('/eliminarProducto/:cartId/:productId', async (req, res) => {
+route.delete('/eliminarProducto/:cartId/:productId', requireUser, async (req, res) => {
   try {
     let cartId = req.params.cartId
     let productId = req.params.productId

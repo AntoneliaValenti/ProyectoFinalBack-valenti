@@ -8,7 +8,7 @@ const { requireAdmin } = require('../middleware/auth')
 const { requireUser } = require('../middleware/auth')
 
 //funciona
-route.get('/allProducts', async (req, res)=> {
+route.get('/allProducts', requireUser, async (req, res)=> {
     try {
       let resp = await Product.find()
       res.render('product', { 
@@ -36,7 +36,7 @@ route.post('/Products', async (req, res) => {
 
 
 //funciona
-route.delete("/:pid",  async (req, res) => {
+route.delete("/:pid", requireAdmin, async (req, res) => {
   try {
     const { pid } = req.params
      const resp = await productmanagerm.deleteProduct(pid)
