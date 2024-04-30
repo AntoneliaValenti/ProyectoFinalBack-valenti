@@ -142,7 +142,8 @@ function calculateTotalItems(cart) {
   let totalItems = 0
 
   cart.products.forEach(product => {
-    totalItems += product.quantity
+    const productPrice = product.quantity * product.price
+    totalPrice += productPrice
   })
 
   return totalItems
