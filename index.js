@@ -13,6 +13,7 @@ const prodRoute = require("./routes/products.routes")
 const cartRoute = require("./routes/cart.routes")
 const usersRoute = require("./routes/users.router")
 const viewRoute = require("./routes/views.router")
+const mockRoute = require("./routes/mock.routes")
 const session = require("express-session")
 //const {createHash} = require('./utils/bcrypts')
 const transporter = require('./modelo/config/mail')
@@ -47,6 +48,7 @@ app.use("/api/products", prodRoute)
 app.use("/api/cart", cartRoute)
 app.use("/api/view", viewRoute)
 app.use("/api/session", usersRoute)
+app.use("/mock", mockRoute)
 app.use("/mail", async (req, res) => {
   try {
     const { id, code, purchase_datetime, amount, purchaser } = req.body
@@ -77,6 +79,7 @@ app.use("/mail", async (req, res) => {
     res.status(500).send('Error interno del servidor al enviar el correo electrónico')
   }
 })
+
 
 //ENGINE
 app.engine("handlebars", handlebars.engine()) //inicializar
