@@ -48,7 +48,7 @@ app.use("/api/products", prodRoute)
 app.use("/api/cart", cartRoute)
 app.use("/api/view", viewRoute)
 app.use("/api/session", usersRoute)
-app.use("/mock", mockRoute)
+app.use("/api/mock", mockRoute)
 app.use("/mail", async (req, res) => {
   try {
     const { id, code, purchase_datetime, amount, purchaser } = req.body
