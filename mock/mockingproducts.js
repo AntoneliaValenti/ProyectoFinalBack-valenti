@@ -1,4 +1,4 @@
-const faker = require('@faker-js/faker/locale/es')
+const { fakerES: faker } = require('@faker-js/faker')
 
 const generateProduct = () => {
     return {
