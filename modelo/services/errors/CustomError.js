@@ -3,7 +3,7 @@ class CustomError {
         const error = new Error(message, { cause })
         error.name = name;
         error.code = code;
-        error.cause = cause ? new Error(cause) : null
+       //error.cause = cause ? new Error(cause) : null
         throw error
     }
 }

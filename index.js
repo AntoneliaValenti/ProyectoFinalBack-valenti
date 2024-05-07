@@ -49,6 +49,7 @@ app.use("/api/cart", cartRoute)
 app.use("/api/view", viewRoute)
 app.use("/api/session", usersRoute)
 app.use("/api/mock", mockRoute)
+app.use(errorHandler)
 app.use("/mail", async (req, res) => {
   try {
     const { id, code, purchase_datetime, amount, purchaser } = req.body
@@ -79,7 +80,7 @@ app.use("/mail", async (req, res) => {
     res.status(500).send('Error interno del servidor al enviar el correo electrónico')
   }
 })
-app.use(errorHandler)
+
 
 //ENGINE
 app.engine("handlebars", handlebars.engine()) //inicializar

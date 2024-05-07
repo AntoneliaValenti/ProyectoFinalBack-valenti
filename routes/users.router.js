@@ -3,9 +3,9 @@ const { Router } = require("express")
 const route = new Router()
 const passport = require("passport")
 const CustomError = require("../modelo/services/errors/CustomError")
-const EErrors = require("../modelo/services/errors/enums")
-const { generateUserErrorInfo } = require("../modelo/services/errors/messages/info")
-const er = require('../modelo/services/errors/middleware/index')
+//const EErrors = require("../modelo/services/errors/enums")
+//const { generateUserErrorInfo } = require("../modelo/services/errors/messages/user-creation-error.message")
+//const er = require('../modelo/services/errors/middleware/index')
 
 route.post("/login", passport.authenticate("login", {
   failureMessage: "Error, usuario y/o contraseña incorrectos",
@@ -65,6 +65,6 @@ route.get('/profile', (req, res) => {
 //   res.render("github")
 // })
 
-route.use(er)
+
 
 module.exports = route

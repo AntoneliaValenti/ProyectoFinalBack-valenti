@@ -9,8 +9,11 @@ const { requireUser } = require('../middleware/auth')
 const ProductDTO = require('../modelo/dto/products.dto')
 const CustomError = require("../modelo/services/errors/CustomError")
 const EErrors = require("../modelo/services/errors/enums")
-const { generateUserErrorInfo } = require("../modelo/services/errors/messages/info")
-//const er = require('../modelo/services/errors/middleware/index')
+const { generateUserErrorInfo } = require("../modelo/services/errors/messages/user-creation-error.message")
+const errorHandler = require('../modelo/services/errors/middleware/index')
+
+
+
 
 //funciona
 route.get('/allProducts', requireUser, async (req, res)=> {
@@ -25,11 +28,9 @@ route.get('/allProducts', requireUser, async (req, res)=> {
     }
 
 })
-
 //funciona
 route.post('/products', async (req, res, next) => {
  // try {
-  console.log("generateUserErrorInfo:", generateUserErrorInfo)
     const { name, price, category, stock } = req.body
 
     if (!name || !price) {
@@ -37,7 +38,7 @@ route.post('/products', async (req, res, next) => {
         name:"ValidationError",
         message:"Propiedades requeridas faltantes o inválidas",
         cause:generateUserErrorInfo({name, price, category, stock}), 
-        code:EErrors.INVALID_TYPES_ERROR,
+        code: EErrors.INVALID_TYPES_ERROR,
       })
     }
     data = new ProductDTO(data);
@@ -67,6 +68,6 @@ route.delete("/:pid", requireAdmin, async (req, res) => {
   }
 })
 
-//route.use(er)
+route.use(errorHandler)
 
 module.exports = route
