@@ -19,43 +19,14 @@ route.post("/login", passport.authenticate("login", {
   }
 )
 
-
 route.post("/register", passport.authenticate("register", {
   failureMessage: "Error, usuario ya existe",
 }),
   (req, res) => {
     try {
-      
-      const {firstname, lastname, mail, age, password} = req.body
-console.log("Usando generateUserErrorInfo:", generateUserErrorInfo)
-
-      if (!firstname || !mail) {
-        CustomError.createError({
-          name: "user cration Error",
-          cause: generateUserErrorInfo({ firstname, mail }),
-          message: "Error al crear el usuario",
-          code: EErrors.INVALID_TYPES_ERROR
-          })
-          const userDto = {
-            firstname,
-            lastname,
-            mail,
-            age,
-            password
-            
-        }
-        if (users.length === 0) {
-            userDto.id = 1;
-        } else {
-            userDto.id = users[users.length - 1].id + 1;
-        }
-        users.push(userDto);
-        res.status(201).send({ status: "success", payload: userDto })
-} else {
-    res.redirect("/api/view/profile")
-  }
+      res.redirect("/api/view/login")
     } catch (err) {
-     console.error(err)
+      console.error(err)
     }
   }
 )

@@ -6,6 +6,11 @@ const ProductManagerMongo = require('../modelo/services/productManagerMongo')
 const productmanagerm = new ProductManagerMongo()
 const { requireAdmin } = require('../middleware/auth')
 const { requireUser } = require('../middleware/auth')
+const ProductDTO = require('../modelo/dto/products.dto')
+const CustomError = require("../modelo/services/errors/CustomError")
+const EErrors = require("../modelo/services/errors/enums")
+const { generateUserErrorInfo } = require("../modelo/services/errors/messages/info")
+//const er = require('../modelo/services/errors/middleware/index')
 
 //funciona
 route.get('/allProducts', requireUser, async (req, res)=> {
@@ -21,18 +26,34 @@ route.get('/allProducts', requireUser, async (req, res)=> {
 
 })
 
-
 //funciona
-route.post('/Products', async (req, res) => {
-  try {
+route.post('/products', async (req, res, next) => {
+ // try {
+  console.log("generateUserErrorInfo:", generateUserErrorInfo)
     const { name, price, category, stock } = req.body
-    const response = await productmanagerm.addProduct({ name, price, category, stock })
-    res.json({ success: true, message: 'Producto agregado correctamente', data: response })
-  } catch (err) {
-    console.error(err)
-    res.status(400).json({ success: false, error: { type: err.name, message: err.message } })
-  }
+
+    if (!name || !price) {
+      CustomError.createError({
+        name:"ValidationError",
+        message:"Propiedades requeridas faltantes o inválidas",
+        cause:generateUserErrorInfo({name, price, category, stock}), 
+        code:EErrors.INVALID_TYPES_ERROR,
+      })
+    }
+    data = new ProductDTO(data);
+    const response = await productmanagerm.addProduct(data)
+    if (response)
+      res.status(201).send({ msg: 'producto creado con éxito', data: true })
+      res.json({ success: true, message: 'Producto agregado correctamente', data: response });
 })
+
+//     const response = await productmanagerm.addProduct({ name, price, category, stock });
+//     res.json({ success: true, message: 'Producto agregado correctamente', data: response });
+
+//   } catch (error) {
+//     next(error)
+//   }
+// })
 
 
 //funciona
@@ -46,6 +67,6 @@ route.delete("/:pid", requireAdmin, async (req, res) => {
   }
 })
 
-
+//route.use(er)
 
 module.exports = route

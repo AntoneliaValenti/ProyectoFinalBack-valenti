@@ -17,7 +17,7 @@ const mockRoute = require("./routes/mock.routes")
 const session = require("express-session")
 //const {createHash} = require('./utils/bcrypts')
 const transporter = require('./modelo/config/mail')
-
+const errorHandler = require('./modelo/services/errors/middleware/index')
 
 app.use(
   session({
@@ -79,7 +79,7 @@ app.use("/mail", async (req, res) => {
     res.status(500).send('Error interno del servidor al enviar el correo electrónico')
   }
 })
-
+app.use(errorHandler)
 
 //ENGINE
 app.engine("handlebars", handlebars.engine()) //inicializar

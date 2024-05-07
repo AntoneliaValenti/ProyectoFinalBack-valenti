@@ -1,6 +1,6 @@
 const EErrors = require("../enums")
 
-const er =(error, req, res, next) => {
+const errorHandler =(error, req, res, next) => {
     console.error("Error detectado entrando al Error Handler")
     console.log(error.cause)
     switch (error.code) {
@@ -12,4 +12,5 @@ const er =(error, req, res, next) => {
     }
 }
 
-module.exports = er
+
+module.exports = errorHandler
