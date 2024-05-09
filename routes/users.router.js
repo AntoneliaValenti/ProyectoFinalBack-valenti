@@ -2,10 +2,7 @@ const express = require("express")
 const { Router } = require("express")
 const route = new Router()
 const passport = require("passport")
-const CustomError = require("../modelo/services/errors/CustomError")
-//const EErrors = require("../modelo/services/errors/enums")
-//const { generateUserErrorInfo } = require("../modelo/services/errors/messages/user-creation-error.message")
-//const er = require('../modelo/services/errors/middleware/index')
+const {faker} = require('@faker-js/faker')  
 
 route.post("/login", passport.authenticate("login", {
   failureMessage: "Error, usuario y/o contraseña incorrectos",
@@ -64,6 +61,15 @@ route.get('/profile', (req, res) => {
 // route.get("/loginGHub", (req, res) => {
 //   res.render("github")
 // })
+
+route.get('/loggerTest', (req, res) => {
+    let firstname = faker.name.firstname();
+    let lastname = faker.name.lastName();
+    let mail = faker.internet.mail();
+    let age = faker.random.numeric(2);
+    let password = faker.internet.password();
+    res.send({firstname, lastname, mail, age, password})
+})
 
 
 

@@ -3,6 +3,7 @@ const MongoStorage = require("connect-mongo")
 require('dotenv').config()
 const port = process.env.PORT
 const host = process.env.MONGOURL
+const config = require('./modelo/config/config')
 const nodemailer = require('nodemailer')
 const app = express()
 const handlebars = require("express-handlebars")
@@ -18,6 +19,8 @@ const session = require("express-session")
 //const {createHash} = require('./utils/bcrypts')
 const transporter = require('./modelo/config/mail')
 const errorHandler = require('./modelo/services/errors/middleware/index')
+const addLogger = require("./modelo/config/logger_CUSTOM")
+
 
 app.use(
   session({
@@ -30,6 +33,7 @@ app.use(
   })
 )
 
+
 //MIDLEWARE(formatea el body)
 app.use(express.json())
 // Otro middleware para analizar datos de formulario
@@ -38,6 +42,7 @@ app.use(express.urlencoded({ extended: true }))
 //PUBLIC
 app.use(express.static(__dirname + "/public"))
 
+app.use(addLogger)
 
 initializePassport()
 app.use(passport.initialize())
