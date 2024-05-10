@@ -19,7 +19,7 @@ dotenv.config({
 
 
 const config = {
-    port: process.env.PORT,
+    PORT: process.env.PORT,
     mongoUrl: process.env.MONGO_URL,
     adminName: process.env.ADMIN_NAME,
     adminPassword: process.env.ADMIN_PASSWORD,
