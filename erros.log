@@ -1,2 +1,7 @@
 debug: GET en /api/view/loggerTest - at 9/5/2024 18:35:47
 debug: GET en /api/view/loggerTest - at 9/5/2024 18:39:07
+debug: POST en /api/products/productsPremium%0A - at 20/5/2024 21:38:33
+debug: POST en /api/products/productsPremium%0A - at 20/5/2024 21:39:55
+debug: POST en /api/products/productsPremium - at 20/5/2024 21:50:35
+debug: POST en /api/products/productsPremium - at 20/5/2024 21:51:51
+debug: POST en /api/products/productsPremium - at 20/5/2024 21:52:03

@@ -3,7 +3,7 @@ const github = require('passport-github2')
 const LocalStrategy = require("passport-local").Strategy
 const userModel = require('../../modelo/dao/db/models/user.model')
 const Cart = require('../../modelo/dao/db/models/cart.model')
-const { createHash, isValidatePassword } = require('../utils/bcrypts')
+const { createHash, isValidatePassword } = require('../../modelo/utils/bcrypts')
 
 
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const mongoPaginate = require('mongoose-paginate-v2')
 
 const ProductsSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         unique: true,
         required: true
@@ -19,6 +19,12 @@ const ProductsSchema = new mongoose.Schema({
     stock: {
         type: Number,
         default: 10
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', 
+        required: true,
+        enum: ['premium']
     }
 })
 

@@ -3,23 +3,23 @@ const MongoStorage = require("connect-mongo")
 require('dotenv').config()
 const port = process.env.PORT
 const host = process.env.MONGOURL
-const config = require('./modelo/config/config')
+const config = require('./src/config/config')
 const nodemailer = require('nodemailer')
 const app = express()
 const handlebars = require("express-handlebars")
 const passport = require("passport")
-const { initializePassport } = require("./modelo/config/passport")
+const { initializePassport } = require("./src/config/passport")
 const Database = require("./modelo/dao/db/index")
-const prodRoute = require("./routes/products.routes")
-const cartRoute = require("./routes/cart.routes")
-const usersRoute = require("./routes/users.router")
-const viewRoute = require("./routes/views.router")
-const mockRoute = require("./routes/mock.routes")
+const prodRoute = require("./src/routes/products.route")
+const cartRoute = require("./src/routes/carts.route")
+const usersRoute = require("./src/routes/user.route")
+const viewRoute = require("./src/routes/views.route")
+const mockRoute = require("./src/routes/mock.route")
 const session = require("express-session")
 //const {createHash} = require('./utils/bcrypts')
-const transporter = require('./modelo/config/mail')
+const transporter = require('./src/config/mail')
 const errorHandler = require('./modelo/services/errors/middleware/index')
-const addLogger = require("./modelo/config/logger_CUSTOM")
+const addLogger = require("./src/config/logger_CUSTOM")
 
 
 app.use(
@@ -93,6 +93,7 @@ app.set("views", __dirname + "/views") //
 app.set("view engine", "handlebars")
 
 //dotenv.config()
+
 
 app.listen(port, () => {
   console.log(`server run on port ${port}`)

@@ -17,11 +17,11 @@ class ProductManagerMongo {
         }
     }
 
-    async addProduct({ name, price, category, stock }) {
-        console.log('Agregando producto:', name)
+    async addProduct({ title, price, category, stock }) {
+        console.log('Agregando producto:', title)
         try {
-          await Product.create({ name, price, category, stock })
-          console.log('Producto guardado:', name)
+          await Product.create({ title, price, category, stock })
+          console.log('Producto guardado:', title)
           return 'Producto guardado'
         } catch (err) {
           console.error('Error al agregar el producto:', err)
