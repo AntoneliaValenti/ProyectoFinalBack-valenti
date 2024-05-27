@@ -41,7 +41,7 @@ route.get('/IdProducts', async (req, res)=> {
   }
 })
 
-//funciona
+// //funciona
 route.post('/products', async (req, res, next) => {
  // try {
     const { title, price, category, stock } = req.body

@@ -13,13 +13,13 @@ const Database = require("./modelo/dao/db/index")
 const prodRoute = require("./src/routes/products.route")
 const cartRoute = require("./src/routes/carts.route")
 const usersRoute = require("./src/routes/user.route")
-const viewRoute = require("./src/routes/views.route")
+const viewRoute = require("./src/routes/view.route")
 const mockRoute = require("./src/routes/mock.route")
 const session = require("express-session")
 //const {createHash} = require('./utils/bcrypts')
 const transporter = require('./src/config/mail')
-const errorHandler = require('./modelo/services/errors/middleware/index')
-const addLogger = require("./src/config/logger_CUSTOM")
+// const errorHandler = require('./modelo/services/errors/middleware/index')
+// const addLogger = require("./src/config/logger_CUSTOM")
 
 
 app.use(
@@ -42,7 +42,7 @@ app.use(express.urlencoded({ extended: true }))
 //PUBLIC
 app.use(express.static(__dirname + "/public"))
 
-app.use(addLogger)
+//app.use(addLogger)
 
 initializePassport()
 app.use(passport.initialize())
@@ -54,7 +54,7 @@ app.use("/api/cart", cartRoute)
 app.use("/api/view", viewRoute)
 app.use("/api/session", usersRoute)
 app.use("/api/mock", mockRoute)
-app.use(errorHandler)
+//app.use(errorHandler)
 app.use("/mail", async (req, res) => {
   try {
     const { id, code, purchase_datetime, amount, purchaser } = req.body
@@ -91,6 +91,8 @@ app.use("/mail", async (req, res) => {
 app.engine("handlebars", handlebars.engine()) //inicializar
 app.set("views", __dirname + "/views") //
 app.set("view engine", "handlebars")
+
+
 
 //dotenv.config()
 
