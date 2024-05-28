@@ -21,7 +21,7 @@ route.post("/register", passport.authenticate("register", {
 }),
   (req, res) => {
     try {
-      res.redirect("/api/view/login")
+      res.redirect("/api/view/profile")
     } catch (err) {
       console.error(err)
     }
@@ -36,7 +36,7 @@ route.get('/failedRegister', (req, res) => {
 route.get("/logout", (req, res) => {
   try {
     req.session.destroy((err) => {
-      err ? res.send(err) : res.redirect("/api/views/login")
+      err ? res.send(err) : res.redirect("/api/view/login")
     });
   } catch (err) {
     console.error(err)
@@ -54,7 +54,7 @@ route.get('/profile', (req, res) => {
   if (req.isAuthenticated()) {
     res.render('current', { userData: req.user })
   } else {
-    res.redirect('/api/views/profile')
+    res.redirect('/api/view/profile')
   }
 })
 

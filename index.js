@@ -15,6 +15,8 @@ const cartRoute = require("./src/routes/carts.route")
 const usersRoute = require("./src/routes/user.route")
 const viewRoute = require("./src/routes/view.route")
 const mockRoute = require("./src/routes/mock.route")
+const restablecerRoute = require("./src/routes/restablecer.route")
+const contraseñaRoute = require("./src/routes/passport.route")
 const session = require("express-session")
 //const {createHash} = require('./utils/bcrypts')
 const transporter = require('./src/config/mail')
@@ -54,6 +56,8 @@ app.use("/api/cart", cartRoute)
 app.use("/api/view", viewRoute)
 app.use("/api/session", usersRoute)
 app.use("/api/mock", mockRoute)
+app.use("/api/reset", restablecerRoute)
+app.use("/api/contraseña", contraseñaRoute)
 //app.use(errorHandler)
 app.use("/mail", async (req, res) => {
   try {
@@ -89,7 +93,7 @@ app.use("/mail", async (req, res) => {
 
 //ENGINE
 app.engine("handlebars", handlebars.engine()) //inicializar
-app.set("views", __dirname + "/views") //
+app.set("views", __dirname + "/src/views") //
 app.set("view engine", "handlebars")
 
 

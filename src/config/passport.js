@@ -47,7 +47,8 @@ const initializePassport = () => {
                 // Crear el carrito para el nuevo usuario
                 let newCart = await Cart.create({ date: new Date(), products: [] })
 
-
+                let role = userData.role
+                
                 // Crear el usuario
                 let userNew = {
                     firstname: userData.firstname,
@@ -55,7 +56,7 @@ const initializePassport = () => {
                     mail: username,
                     age: userData.age,
                     password: createHash(userData.password),
-                    role: "user",
+                    role: role,
                     cart: newCart._id
                 }
 
