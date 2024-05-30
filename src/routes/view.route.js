@@ -22,8 +22,9 @@ route.get("/profile", (req, res) => {
   res.render("current", { firstname, lastname, mail, age, role })
 })
 
-route.get("/restablecer", (req, res) => {
-  res.render("restablecer")
-})
+// route.get("/reset", (req, res) => {
+//   res.render("restablecer")
+// })
+
 
 module.exports = route; 
