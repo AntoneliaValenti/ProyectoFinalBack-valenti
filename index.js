@@ -41,7 +41,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 //PUBLIC
-app.use(express.static(__dirname + "/public"))
+app.use(express.static(__dirname + "/src/public"))
 
 //app.use(addLogger)
 

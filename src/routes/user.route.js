@@ -3,6 +3,7 @@ const { Router } = require("express")
 const route = new Router()
 const passport = require("passport")
 const {faker} = require('@faker-js/faker')  
+const userModel = require('../modelo/dao/db/models/user.model')
 
 route.post("/login", passport.authenticate("login", {
   failureMessage: "Error, usuario y/o contraseña incorrectos",
