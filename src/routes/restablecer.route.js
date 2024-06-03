@@ -4,7 +4,7 @@ const crypto = require('crypto')
 const nodemailer = require('nodemailer')
 const userModel = require('../modelo/dao/db/models/user.model')
 const route = new Router()
-const createHash = require('../modelo/utils/bcrypts')
+const { createHash } = require('../modelo/utils/bcrypts')
 
 const transporter = nodemailer.createTransport({
     service: 'hotmail', 

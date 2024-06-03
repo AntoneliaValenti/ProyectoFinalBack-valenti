@@ -63,14 +63,36 @@ route.get('/profile', (req, res) => {
 // })
 
 route.get('/loggerTest', (req, res) => {
-    let firstname = faker.name.firstname();
-    let lastname = faker.name.lastName();
-    let mail = faker.internet.mail();
-    let age = faker.random.numeric(2);
-    let password = faker.internet.password();
+    let firstname = faker.name.firstname()
+    let lastname = faker.name.lastName()
+    let mail = faker.internet.mail()
+    let age = faker.random.numeric(2)
+    let password = faker.internet.password()
     res.send({firstname, lastname, mail, age, password})
 })
 
+route.post('/change-role/:userId', async (req, res) => {
+  const { userId } = req.params
+  const { newRole } = req.body
 
+  try {
+    const user = await userModel.findById(userId)
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' })
+    }
+
+
+    user.role = (newRole === 'admin') ? 'admin' : (newRole === 'user') ? 'user' : 'premium'
+    await user.save()
+
+
+    res.status(200).json({ message: 'Rol de usuario actualizado exitosamente', user })
+  } catch (error) {
+
+    console.error('Error al cambiar el rol del usuario:', error)
+    res.status(500).json({ message: 'Error en el servidor' })
+  }
+})
 
 module.exports = route

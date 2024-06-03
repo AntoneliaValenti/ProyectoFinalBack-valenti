@@ -17,7 +17,7 @@ const errorHandler = require('../modelo/services/errors/middleware/index')
 
 
 //funciona
-route.get('/allProducts', requireUser, async (req, res)=> {
+route.get('/allProducts', async (req, res)=> {
     try {
       let resp = await Product.find()
       res.render('product', { 

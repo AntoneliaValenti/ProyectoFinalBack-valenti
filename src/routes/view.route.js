@@ -22,9 +22,8 @@ route.get("/profile", (req, res) => {
   res.render("current", { firstname, lastname, mail, age, role })
 })
 
-// route.get("/reset", (req, res) => {
-//   res.render("restablecer")
-// })
-
+route.get("/change-role", (req, res) => {
+  res.render("change-role")
+})
 
 module.exports = route; 

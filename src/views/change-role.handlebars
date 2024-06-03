@@ -1,0 +1,47 @@
+
+
+    <h1>Cambiar Rol de Usuario</h1>
+    <form id="changeRoleForm">
+        <label for="userId">ID de Usuario:</label>
+        <input type="text" id="userId" name="userId" required><br><br>
+        
+        <label for="newRole">Nuevo Rol:</label>
+        <select id="newRole" name="newRole">
+            <option value="admin">Admin</option>
+            <option value="user">Usuario</option>
+            <option value="premium">Premium</option>
+        </select><br><br>
+
+        <button type="submit">Cambiar Rol</button>
+    </form>
+    <script>
+        document.getElementById('changeRoleForm').addEventListener('submit', function(event) {
+            event.preventDefault()
+
+            const userId = document.getElementById('userId').value
+            const newRole = document.getElementById('newRole').value
+
+            fetch(`http://localhost:8080/api/view/change-role/${userId}`, { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ newRole })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al cambiar el rol del usuario')
+                }
+                return response.json()
+            })
+            .then(data => {
+                alert(data.message)
+                document.getElementById('changeRoleForm').reset()
+            })
+            .catch(error => {
+                console.error('Error:', error)
+                alert('Error al cambiar el rol del usuario')
+            })
+        })
+    </script>
+
