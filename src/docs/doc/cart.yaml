@@ -3,7 +3,9 @@ paths:
     get:
       summary: Obtiene todos los Carritos disponibles en la aplicacion
       tags:
-        - Cart
+        - Carrito
+      security:
+        - adminAuth: []
       responses:  
         "200":
           description: La operacion fue exitosa!! Se retorna un arreglo con los Carritos.
@@ -17,7 +19,7 @@ paths:
     get:
       summary: Obtiene un Carrito por id disponibles en la aplicacion
       tags:
-        - Cart
+        - Carrito
       parameters:
         - name: uid
           in: path
@@ -58,3 +60,7 @@ components:
           type: Number
           description: Cantidad de stock que hay en el Carrito
       example: 
+        _id: 65fb888f2db7f171f99bdb52
+        date: Wed Mar 20 2024 22:08:31 GMT-0300 (hora estándar de Argentina)
+        products: []    
+        amount: 0
