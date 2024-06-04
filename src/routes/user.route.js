@@ -83,15 +83,42 @@ route.post('/change-role/:userId', async (req, res) => {
       return res.status(404).json({ message: 'Usuario no encontrado' })
     }
 
-
+  
     user.role = (newRole === 'admin') ? 'admin' : (newRole === 'user') ? 'user' : 'premium'
-    await user.save()
+     await user.save()
 
 
     res.status(200).json({ message: 'Rol de usuario actualizado exitosamente', user })
   } catch (error) {
 
     console.error('Error al cambiar el rol del usuario:', error)
+    res.status(500).json({ message: 'Error en el servidor' })
+  }
+})
+
+route.get('/allUsers', async (req, res) => {
+  try {
+    const users = await userModel.find()
+    res.status(200).json(users)
+  } catch (error) {
+    console.error('Error al obtener los usuarios:', error)
+    res.status(500).json({ message: 'Error en el servidor' })
+  }
+})
+
+route.get('/users/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await userModel.findById(userId)
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' })
+    }
+
+    res.status(200).json(user)
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error)
     res.status(500).json({ message: 'Error en el servidor' })
   }
 })

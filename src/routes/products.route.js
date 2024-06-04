@@ -29,15 +29,32 @@ route.get('/allProducts', async (req, res)=> {
     }
 })
 
-route.get('/IdProducts', async (req, res)=> {
+// route.get('/IdProducts', async (req, res)=> {
+//   try {
+//     let resp = await Product.find({}, '_id')
+//     res.render('product', { 
+//       msg: 'Productos encontrados por Id',
+//       data: resp
+//     })
+//   } catch (err) {
+//     res.status(400).send({ error: err.message })
+//   }
+// })
+
+route.get('/product/:productId', async (req, res) => {
+  const { productId } = req.params;
+
   try {
-    let resp = await Product.find({}, '_id')
-    res.render('product', { 
-      msg: 'Productos encontrados por Id',
-      data: resp
-    })
-  } catch (err) {
-    res.status(400).send({ error: err.message })
+    const user = await Product.findById(productId)
+
+    if (!user) {
+      return res.status(404).json({ message: 'Producto no encontrado' })
+    }
+
+    res.status(200).json(user)
+  } catch (error) {
+    console.error('Error al obtener el producto:', error)
+    res.status(500).json({ message: 'Error en el servidor' })
   }
 })
 

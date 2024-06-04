@@ -1,0 +1,72 @@
+paths:
+  /api/session/allUsers:
+    get:
+      summary: Obtiene todos los usuarios disponibles en la aplicacion
+      tags:
+        - Users
+      responses:  
+        "200":
+          description: La operacion fue exitosa!! Se retorna un arrgle con los usuarios.
+        "400":
+          description: Se envio un dato no esperado.
+        "500":
+          description: Error inesperado en el server, no se puede manejar el proceso.
+
+
+/api/session/users/{uid}:
+    get:
+      summary: Obtiene un usuario por id disponibles en la aplicacion
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: id del usuario que se desea buscar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: La operacion fue exitosa!! Se retorna un arrgle con los usuarios.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/User'
+        "400":
+          description: Se envio un dato no esperado.
+        "500":
+          description: Error inesperado en el server, no se puede manejar el proceso.
+
+
+components:
+  schemas:
+    User: 
+      type: object
+      properties:
+        _id: 
+          type: ObjectId
+          description: Id autogenerado de MongoDB.
+        firstname: 
+          type: String
+          description: Nombre del usuario
+        lastname:
+          type: String
+          description: Apellido del usuario
+        mail:
+          type: String
+          description: Email del usuario
+        age:
+          type: Number
+          description: Edad del usuario
+        password:
+          type: String
+          description: Contraseña del usuario
+      example: 
+        _id: 6658ef6ab8466c5d4bdd22cf
+        firstname: Antonelia
+        lastname: Valen
+        mail: antonelia.valenti@hotmail.com
+        age: 32
+        password: 1234

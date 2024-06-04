@@ -1,0 +1,68 @@
+paths:
+  /api/products/allProducts:
+    get:
+      summary: Obtiene todos los productos disponibles en la aplicacion
+      tags:
+        - Products
+      responses:  
+        "200":
+          description: La operacion fue exitosa!! Se retorna un arreglo con los productos.
+        "400":
+          description: Se envio un dato no esperado.
+        "500":
+          description: Error inesperado en el server, no se puede manejar el proceso.
+
+
+/api/products/product/{uid}:
+    get:
+      summary: Obtiene un usuario por id disponibles en la aplicacion
+      tags:
+        - Products
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: id del producto que se desea buscar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: La operacion fue exitosa!! Se retorna un arreglo con los productos.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "400":
+          description: Se envio un dato no esperado.
+        "500":
+          description: Error inesperado en el server, no se puede manejar el proceso.
+
+
+components:
+  schemas:
+    Products: 
+      type: object
+      properties:
+        _id: 
+          type: ObjectId
+          description: Id autogenerado de MongoDB.
+        title: 
+          type: String
+          description: Nombre del producto
+        price:
+          type: Number
+          description: Precio del producto
+        category:
+          type: String
+          description: Categoria en la que pertenece el producto
+        stock:
+          type: Number
+          description: Cantidad de stock del producto
+      example: 
+        _id: 65da6a91f4bb2843db8a016b
+        name: Pizza capresse
+        price: 10520
+        category: salado
+        stock: 10

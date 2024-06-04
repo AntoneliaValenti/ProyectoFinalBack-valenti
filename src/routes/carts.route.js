@@ -1,6 +1,6 @@
 const express = require('express')
 const { Router } = require('express')
-const Cart = require('../modelo/dao/db/models/cart.model')
+const Carrito = require('../modelo/dao/db/models/cart.model')
 const Product = require('../modelo/dao/db/models/product.model')
 const Ticket = require('../modelo/dao/db/models/ticket.model')
 const route = new Router()
@@ -13,7 +13,7 @@ const { requireUser } = require('../middleware/auth')
 //funciona
 route.get('/allCart', requireAdmin,  async (req, res) => {
   try {
-    let resp = await Cart.find()
+    let resp = await Carrito.find()
     res.send({
       msg: 'Carritos encontrados',
       data: resp
@@ -163,8 +163,38 @@ route.put('/eliminarCarrito/:cid', async (req, res) => {
     console.error(error)
   }
 })
+route.get('/carts/:cartId', async (req, res) => {
+  const { cartId } = req.params;
 
+  try {
+    const cart = await userModel.findById(cartId)
 
+    if (!cart) {
+      return res.status(404).json({ message: 'Usuario no encontrado' })
+    }
+
+    res.status(200).json(cart)
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error)
+    res.status(500).json({ message: 'Error en el servidor' })
+  }
+})
+// route.get('/cart/:cartId', async (req, res) => {
+//   const { cartId } = req.params
+
+//   try {
+//     const cart = await Carrito.findById(cartId).populate('products.product')
+
+//     if (!cart) {
+//       return res.status(404).json({ message: 'Carrito no encontrado' })
+//     }
+
+//     res.status(200).json(cart)
+//   } catch (error) {
+//     console.error('Error al obtener el carrito:', error)
+//     res.status(500).json({ message: 'Error en el servidor' })
+//   }
+// })
 
 
 // //Funcion encontrar producto dentro de un carrito:

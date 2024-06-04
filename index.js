@@ -21,7 +21,8 @@ const session = require("express-session")
 const transporter = require('./src/config/mail')
 // const errorHandler = require('./modelo/services/errors/middleware/index')
 // const addLogger = require("./src/config/logger_CUSTOM")
-
+const swaggerJSDoc = require("swagger-jsdoc")
+const swaggerUIExpress = require("swagger-ui-express")
 
 app.use(
   session({
@@ -34,6 +35,18 @@ app.use(
   })
 )
 
+const swaggerOptions = {
+  definition: {
+    openapi:"3.0.1",
+    info:  {
+      title: "Documentacion Api Eccomerce",
+      description: "Documentacion Api Eccomerce - para uso de swagger"
+  }
+},
+  apis: ['./src/docs/**/*.yaml']
+}
+const specs = swaggerJSDoc(swaggerOptions)
+app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
 
 //MIDLEWARE(formatea el body)
 app.use(express.json())
