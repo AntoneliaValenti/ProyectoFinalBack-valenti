@@ -29,18 +29,6 @@ route.get('/allProducts', async (req, res)=> {
     }
 })
 
-// route.get('/IdProducts', async (req, res)=> {
-//   try {
-//     let resp = await Product.find({}, '_id')
-//     res.render('product', { 
-//       msg: 'Productos encontrados por Id',
-//       data: resp
-//     })
-//   } catch (err) {
-//     res.status(400).send({ error: err.message })
-//   }
-// })
-
 route.get('/product/:productId', async (req, res) => {
   const { productId } = req.params;
 
