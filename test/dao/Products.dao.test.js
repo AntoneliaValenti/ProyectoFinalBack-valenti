@@ -3,8 +3,8 @@ const Product = require('../../src/modelo/dao/db/models/product.model')
 const Assert = require("assert")
 
 mongoose.connect("mongodb+srv://avalenti3003:Teclado3003@proyectocoder.wcbxmpy.mongodb.net/eccomerce-test", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 const assert = Assert.strict
@@ -28,7 +28,7 @@ describe('Testing Products Dao', () => {
     it('El dao debe agregar un producto correctamente en la DB', async function () {
         // Given
         let mockProduct = {
-            title: 'Test Product',
+            title: 'Test Product 2',
             price: 10.99,
             category: 'dulce',
             stock: 20,
