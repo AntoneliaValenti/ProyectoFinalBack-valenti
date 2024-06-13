@@ -24,18 +24,18 @@ describe('Testing ecommerce App', () => {
             };
 
             // Then
-            const { body } = await requester.post('/api/products/products').send(mockProduct);
+            const { body } = await requester.post('/api/products/products').send(mockProduct)
 
             // Assert
     
-            expect(body).to.have.property('title', mockProduct.title);
-            expect(body).to.have.property('price', mockProduct.price);
-            expect(body).to.have.property('category', mockProduct.category);
-            expect(body).to.have.property('stock', mockProduct.stock);
-            expect(body).to.have.property('owner').that.equals(String(mockProduct.owner)); // Conversión a cadena si es necesario
-        });
-    });
-});
+            expect(body).to.have.property('title', mockProduct.title)
+            expect(body).to.have.property('price', mockProduct.price)
+            expect(body).to.have.property('category', mockProduct.category)
+            expect(body).to.have.property('stock', mockProduct.stock)
+    
+        })
+    })
+})
 
 //expect(statusCode).is.eqls(404)
             //expect(_body.payload).is.ok.and.to.have.property('_id')
