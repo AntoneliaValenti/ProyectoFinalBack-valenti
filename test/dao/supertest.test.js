@@ -1,6 +1,6 @@
-import { expect } from "chai"
-import supertest from "supertest"
-import mongoose from "mongoose"
+const mongoose = require("mongoose")
+const chai = require('chai')
+const supertest = require("supertest")
 
 const requester = supertest('http://localhost:8080/')
 
@@ -16,7 +16,7 @@ describe('Testing ecommerce App', () => {
         it("Crear productos: El API POST /api/products/products debe crear un nuevo producto correctamente", async () => {
             // Given 
             let mockProduct = {
-                title: 'Test Product 12',
+                title: 'Test Product abc',
                 price: 10.99,
                 category: 'dulce',
                 stock: 20,

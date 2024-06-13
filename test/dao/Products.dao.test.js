@@ -28,7 +28,7 @@ describe('Testing Products Dao', () => {
     it('El dao debe agregar un producto correctamente en la DB', async function () {
         // Given
         let mockProduct = {
-            title: 'Test Product 6',
+            title: 'Test Product 123',
             price: 10.99,
             category: 'dulce',
             stock: 20,
