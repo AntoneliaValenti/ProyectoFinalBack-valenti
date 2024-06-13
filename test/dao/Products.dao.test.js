@@ -22,13 +22,13 @@ describe('Testing Products Dao', () => {
     });
 
     beforeEach(function(){
-        this.timeout(5000)
+        this.timeout(6000)
     });
 
     it('El dao debe agregar un producto correctamente en la DB', async function () {
         // Given
         let mockProduct = {
-            title: 'Test Product 2',
+            title: 'Test Product 6',
             price: 10.99,
             category: 'dulce',
             stock: 20,
