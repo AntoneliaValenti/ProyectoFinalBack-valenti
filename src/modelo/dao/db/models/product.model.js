@@ -23,8 +23,8 @@ const ProductsSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', 
-        required: true,
-        enum: ['premium']
+        // required: true,
+        // enum: ['premium']
     }
 })
 
