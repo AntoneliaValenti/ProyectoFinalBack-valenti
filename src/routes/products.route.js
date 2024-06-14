@@ -48,23 +48,27 @@ route.get('/product/:productId', async (req, res) => {
 
 // //funciona
 route.post('/products', async (req, res, next) => {
- // try {
-    const { title, price, category, stock } = req.body
+  try {
+      const { title, price, category, stock } = req.body
 
-    if (!title || !price) {
-      CustomError.createError({
-        name:"ValidationError",
-        message:"Propiedades requeridas faltantes o inválidas",
-        cause:generateUserErrorInfo({title, price, category, stock}), 
-        code: EErrors.INVALID_TYPES_ERROR,
-      })
-    }
-    data = new ProductDTO(data);
-    const response = await productmanagerm.addProduct(data)
-    if (response)
-      res.status(201).send({ msg: 'producto creado con éxito', data: true })
-      res.json({ success: true, message: 'Producto agregado correctamente', data: response });
+      if (!title || !price) {
+          throw CustomError.createError({
+              name: "ValidationError",
+              message: "Propiedades requeridas faltantes o inválidas",
+              cause: generateUserErrorInfo({ title, price, category, stock }),
+              code: EErrors.INVALID_TYPES_ERROR,
+          })
+      }
+
+      const productData = new ProductDTO({ title, price, category, stock })
+      const response = await productmanagerm.addProduct(productData)
+
+      res.status(201).json({ success: true, message: 'Producto agregado correctamente', data: response })
+  } catch (error) {
+      next(error)
+  }
 })
+
 
 route.post('/productsPremium', requirePremium, async (req, res, next) => {
   try {
