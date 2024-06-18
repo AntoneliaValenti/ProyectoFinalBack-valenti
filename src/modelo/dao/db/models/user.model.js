@@ -20,7 +20,7 @@ const UsersSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-       // required: true
+        // required: true
     },
     cart: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,18 +30,34 @@ const UsersSchema = new mongoose.Schema({
         type: String,
         enum: ["admin", "user", "premium"]
     },
-    resetPasswordToken: {
-        type: String
+    documents:  {
+        identificacion: {
+          name: String,
+          reference: String
+        },
+        domicilio: {
+          name: String,
+          reference: String
+        },
+        estadoCuenta: {
+          name: String,
+          reference: String
+        }
     },
-    resetPasswordExpires: {
-        type: Date
-    }
- 
+    resetPasswordToken: {
+    type: String
 },
-    {
-        timestamps:true,
-        strict:false
-    }
+    resetPasswordExpires: {
+    type: Date
+},
+    last_connection: {
+    Date
+}
+},
+{
+    timestamps: true,
+        strict: false
+}
 )
 
 const Users = mongoose.model('users', UsersSchema)

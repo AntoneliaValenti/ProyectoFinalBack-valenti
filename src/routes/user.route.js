@@ -10,9 +10,16 @@ route.post("/login", passport.authenticate("login", {
 }),
   async (req, res) => {
     try {
+      const user = await userModel.findById(req.user._id)
+      if (user) {
+        user.last_connection = new Date()
+        await user.save()
+      }
+
       res.redirect('/api/view/profile')
     } catch (err) {
       console.error(err)
+      res.status(500).json({ message: 'Error en el servidor' })
     }
   }
 )
@@ -72,7 +79,7 @@ route.get('/loggerTest', (req, res) => {
     res.send({firstname, lastname, mail, age, password})
 })
 
-route.post('/change-role/:userId', async (req, res) => {
+route.post('/premium/:userId', async (req, res) => {
   const { userId } = req.params
   const { newRole } = req.body
 
@@ -83,14 +90,17 @@ route.post('/change-role/:userId', async (req, res) => {
       return res.status(404).json({ message: 'Usuario no encontrado' })
     }
 
-  
-    user.role = (newRole === 'admin') ? 'admin' : (newRole === 'user') ? 'user' : 'premium'
-     await user.save()
+    const { identificacion, domicilio, estadoCuenta } = user.documents
 
+    if (!identificacion || !domicilio || !estadoCuenta) {
+      return res.status(400).json({ message: 'No se puede actualizar el rol a premium. Faltan documentos.' })
+    }
+
+    user.role = (newRole === 'admin') ? 'admin' : (newRole === 'user') ? 'user' : 'premium'
+    await user.save()
 
     res.status(200).json({ message: 'Rol de usuario actualizado exitosamente', user })
   } catch (error) {
-
     console.error('Error al cambiar el rol del usuario:', error)
     res.status(500).json({ message: 'Error en el servidor' })
   }
@@ -124,3 +134,7 @@ route.get('/users/:userId', async (req, res) => {
 })
 
 module.exports = route
+
+
+
+
