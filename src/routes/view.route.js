@@ -30,4 +30,15 @@ route.get("/change-role", (req, res) => {
   res.render("change-role")
 })
 
+
+route.get("/changeRoleAdmi", (req, res) => {
+  res.render("changeRoleAdmi")
+})
+
+
+route.get("/allUsers", (req, res) => {
+  res.render("allUsers")
+})
+
+
 module.exports = route; 

@@ -7,7 +7,6 @@ const config = require('./src/config/config')
 const nodemailer = require('nodemailer')
 const app = express()
 const handlebars = require("express-handlebars")
-
 const passport = require("passport")
 const { initializePassport } = require("./src/config/passport")
 const Database = require("./src/modelo/dao/db/index")
@@ -108,10 +107,6 @@ app.engine("handlebars", handlebars.engine()) //inicializar
 app.set("views", __dirname + "/src/views") //
 app.set("view engine", "handlebars")
 
-
-
-app.set("view engine", "handlebars")
-app.set("views", __dirname + "/src/views")
 
 
 

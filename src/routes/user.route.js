@@ -6,16 +6,62 @@ const {faker} = require('@faker-js/faker')
 const userModel = require('../modelo/dao/db/models/user.model')
 const { requireAdmin } = require('../middleware/auth')
 
-route.get('/allUsers', requireAdmin, async (req, res) => {
+// Ruta para obtener todos los usuarios y renderizar la vista
+route.get('/allUsers', async (req, res) => {
   try {
-      const users = await userModel.find();
-      res.render('allUsers', { users })
+    const users = await userModel.find();
+    res.render('allUsers', { users });
   } catch (error) {
-      console.error('Error al obtener los usuarios:', error);
-      res.status(500).json({ message: 'Error en el servidor' });
+    console.error('Error al obtener los usuarios:', error);
+    res.status(500).json({ message: 'Error en el servidor' });
+  }
+});
+
+//ruta de prueba
+route.get('/allUserstodos', async (req, res) => {
+  try {
+    const users = await userModel.find()
+    res.status(200).json(users)
+  } catch (error) {
+    console.error('Error al obtener los usuarios:', error)
+    res.status(500).json({ message: 'Error en el servidor' })
   }
 })
 
+// Ruta para cambiar el rol del usuario
+route.post('/changeRoleAdmi/:userId', requireAdmin, async (req, res) => {
+  const { userId } = req.params;
+  const { newRole } = req.body;
+
+  try {
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    user.role = newRole;
+    await user.save();
+
+    res.redirect('/allUsers');
+  } catch (error) {
+    console.error('Error al cambiar el rol del usuario:', error);
+    res.status(500).json({ message: 'Error en el servidor' });
+  }
+});
+
+// Ruta para eliminar un usuario
+route.post('/deleteUser/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    await userModel.findByIdAndDelete(userId);
+    res.redirect('/allUsers');
+  } catch (error) {
+    console.error('Error al eliminar usuario:', error);
+    res.status(500).json({ message: 'Error en el servidor' });
+  }
+});
 route.delete('/inactiveUsers', async (req, res) => {
   try {
     const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000)
@@ -145,15 +191,7 @@ route.post('/premium/:userId', async (req, res) => {
   }
 })
 
-// route.get('/allUsers', async (req, res) => {
-//   try {
-//     const users = await userModel.find()
-//     res.status(200).json(users)
-//   } catch (error) {
-//     console.error('Error al obtener los usuarios:', error)
-//     res.status(500).json({ message: 'Error en el servidor' })
-//   }
-// })
+
 
 route.get('/users/:userId', async (req, res) => {
   const { userId } = req.params;

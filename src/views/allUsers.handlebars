@@ -19,14 +19,26 @@
         <tbody>
             {{#each users}}
             <tr>
-                <td>{{this.users.firstname}}</td>
-                <td>{{this.users.lastname}}</td>
-                <td>{{this.users.mail}}</td>
-                <td>{{this.users.role}}</td>
+                <td>{{this.firstname}}</td>
+                <td>{{this.lastname}}</td>
+                <td>{{this.mail}}</td>
+                <td>{{this.role}}</td>
+                <td>
+                    <form action="/changeRoleAdmi/{{this._id}}" method="POST">
+                        <select name="newRole">
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                        <button type="submit">Actualizar Rol</button>
+                    </form>
+                    <form action="/deleteUser/{{this._id}}" method="DELETE">
+                        <button type="submit">Eliminar Usuario</button>
+                    </form>
+                </td>
             </tr>
             {{/each}}
         </tbody>
     </table>
 </body>
 </html>
-
