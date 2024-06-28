@@ -4,6 +4,45 @@ const route = new Router()
 const passport = require("passport")
 const {faker} = require('@faker-js/faker')  
 const userModel = require('../modelo/dao/db/models/user.model')
+const { requireAdmin } = require('../middleware/auth')
+
+route.get('/allUsers', requireAdmin, async (req, res) => {
+  try {
+      const users = await userModel.find();
+      res.render('allUsers', { users })
+  } catch (error) {
+      console.error('Error al obtener los usuarios:', error);
+      res.status(500).json({ message: 'Error en el servidor' });
+  }
+})
+
+route.delete('/inactiveUsers', async (req, res) => {
+  try {
+    const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000)
+
+    const inactiveUsers = await userModel.find({ last_connection: { $lt: thirtyMinutesAgo } });
+
+    if (inactiveUsers.length === 0) {
+      return res.status(200).json({ message: 'No hay usuarios inactivos para eliminar' });
+    }
+
+    const emailPromises = inactiveUsers.map(async (user) => {
+      await userModel.deleteOne({ _id: user._id })
+      sendDeletionEmail(user.mail, user.firstname)
+    });
+
+    await Promise.all(emailPromises)
+
+    res.status(200).json({ message: `${inactiveUsers.length} usuarios inactivos eliminados y correos enviados` })
+  } catch (error) {
+    console.error('Error al eliminar usuarios inactivos:', error)
+    res.status(500).json({ message: 'Error en el servidor' })
+  }
+})
+
+
+
+//rutas solicitadas en desafios anteriores
 
 route.post("/login", passport.authenticate("login", {
   failureMessage: "Error, usuario y/o contraseña incorrectos",
@@ -41,14 +80,14 @@ route.get('/failedRegister', (req, res) => {
 })
 
 
-route.get("/logout", (req, res) => {
-  try {
-    req.session.destroy((err) => {
-      err ? res.send(err) : res.redirect("/api/view/login")
-    });
-  } catch (err) {
-    console.error(err)
-  }
+route.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error al cerrar sesión' })
+    }
+    res.clearCookie('connect.sid') 
+    res.status(200).json({ message: 'Cierre de sesión exitoso' })
+  })
 })
 
 route.get('/github', passport.authenticate("github", {}), (req, res) => { })
@@ -106,15 +145,15 @@ route.post('/premium/:userId', async (req, res) => {
   }
 })
 
-route.get('/allUsers', async (req, res) => {
-  try {
-    const users = await userModel.find()
-    res.status(200).json(users)
-  } catch (error) {
-    console.error('Error al obtener los usuarios:', error)
-    res.status(500).json({ message: 'Error en el servidor' })
-  }
-})
+// route.get('/allUsers', async (req, res) => {
+//   try {
+//     const users = await userModel.find()
+//     res.status(200).json(users)
+//   } catch (error) {
+//     console.error('Error al obtener los usuarios:', error)
+//     res.status(500).json({ message: 'Error en el servidor' })
+//   }
+// })
 
 route.get('/users/:userId', async (req, res) => {
   const { userId } = req.params;

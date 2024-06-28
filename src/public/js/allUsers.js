@@ -1,5 +1,5 @@
 const render = () => {
-    fetch('/current')
+    fetch('/allUsers')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al obtener datos: ${response.statusText}`)
@@ -12,7 +12,6 @@ const render = () => {
         document.getElementById('firstname').textContent = userData.firstname
         document.getElementById('lastname').textContent = user.lastname
         document.getElementById('email').textContent = user.mail
-        document.getElementById('age').textContent = user.age
         document.getElementById('role').textContent = user.role
       })
       .catch((error) => {

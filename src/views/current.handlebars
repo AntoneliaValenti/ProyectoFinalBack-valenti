@@ -12,7 +12,33 @@
     <button id="logout">CERRAR SESIÓN</button>
     <button id="toCart">IR AL CARRITO</button>
     <a href="/api/products/allProducts">Ver todos los Productos</a>
-      <a href="/api/view/premium">Cambiar Rol</a>
+    <a href="/api/view/premium">Cambiar Rol</a>
 </main>
 
-<script src="/js/current"></script>
+<script>
+  // Función para cerrar sesión
+  document.getElementById('logout').addEventListener('click', async () => {
+    try {
+      const response = await fetch('/api/session/logout', { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        window.location.href = '/api/view/login'
+      } else {
+        console.error('Error al cerrar sesión')
+      }
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error)
+    }
+  })
+
+  // Función para redirigir al carrito
+  document.getElementById('toCart').addEventListener('click', () => {
+    window.location.href = '/api/cart/Cart1'
+  })
+</script>
+
