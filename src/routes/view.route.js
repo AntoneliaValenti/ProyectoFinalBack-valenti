@@ -17,9 +17,6 @@ route.get("/cart", (req, res) => {
   res.render("cart")
 })
 
-route.get("/allUsers", (req, res) => {
-  res.render("allUsers")
-})
 
 route.get("/profile", (req, res) => {
   const { firstname, lastname, mail, age, role } = req.session.passport.user
@@ -37,7 +34,7 @@ route.get("/changeRoleAdmi", (req, res) => {
 
 
 route.get("/allUsers", (req, res) => {
-  res.render("allUsers")
+  res.render("UsersManager")
 })
 
 

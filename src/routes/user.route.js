@@ -7,10 +7,10 @@ const userModel = require('../modelo/dao/db/models/user.model')
 const { requireAdmin } = require('../middleware/auth')
 
 // Ruta para obtener todos los usuarios y renderizar la vista
-route.get('/allUsers', async (req, res) => {
+route.get('/allUsers', requireAdmin, async (req, res) => {
   try {
     const users = await userModel.find();
-    res.render('allUsers', { users });
+    res.send(users);
   } catch (error) {
     console.error('Error al obtener los usuarios:', error);
     res.status(500).json({ message: 'Error en el servidor' });
@@ -18,32 +18,30 @@ route.get('/allUsers', async (req, res) => {
 });
 
 //ruta de prueba
-route.get('/allUserstodos', async (req, res) => {
-  try {
-    const users = await userModel.find()
-    res.status(200).json(users)
-  } catch (error) {
-    console.error('Error al obtener los usuarios:', error)
-    res.status(500).json({ message: 'Error en el servidor' })
-  }
-})
+// route.get('/allUserstodos', async (req, res) => {
+//   try {
+//     const users = await userModel.find()
+//     res.status(200).json(users)
+//   } catch (error) {
+//     console.error('Error al obtener los usuarios:', error)
+//     res.status(500).json({ message: 'Error en el servidor' })
+//   }
+// })
 
 // Ruta para cambiar el rol del usuario
-route.post('/changeRoleAdmi/:userId', requireAdmin, async (req, res) => {
-  const { userId } = req.params;
-  const { newRole } = req.body;
+route.post('/changeRoleAdmi/:userMail/:newRole', requireAdmin, async (req, res) => {
+  const { userMail } = req.params;
+  const { newRole } = req.params;
+  console.log(userMail, newRole)
 
   try {
-    const user = await userModel.findById(userId);
-
+    const user = await userModel.find({mail:userMail})
     if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    user.role = newRole;
-    await user.save();
+    await userModel.updateOne({mail: userMail}, {role: newRole})
 
-    res.redirect('/allUsers');
   } catch (error) {
     console.error('Error al cambiar el rol del usuario:', error);
     res.status(500).json({ message: 'Error en el servidor' });
@@ -51,17 +49,26 @@ route.post('/changeRoleAdmi/:userId', requireAdmin, async (req, res) => {
 });
 
 // Ruta para eliminar un usuario
-route.post('/deleteUser/:userId', async (req, res) => {
-  const { userId } = req.params;
+route.delete('/deleteUser/:userMail', requireAdmin, async (req, res) => {
+  const { userMail } = req.params;
 
   try {
-    await userModel.findByIdAndDelete(userId);
-    res.redirect('/allUsers');
+    const response = await  userModel.deleteOne({mail:userMail});
+    console.log(response)
+
+    if (response.deletedCount === 1) {
+      res.status(201).json({ success: true, message: 'Usuario eliminado correctamente', data: response }) 
+      console.log('Usuario eliminado exitosamente')
+    } else {
+      res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
   } catch (error) {
     console.error('Error al eliminar usuario:', error);
     res.status(500).json({ message: 'Error en el servidor' });
   }
 });
+//menos admi
 route.delete('/inactiveUsers', async (req, res) => {
   try {
     const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000)
