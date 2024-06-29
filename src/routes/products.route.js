@@ -20,12 +20,10 @@ const errorHandler = require('../modelo/services/errors/middleware/index')
 route.get('/allProducts', async (req, res)=> {
     try {
       let resp = await Product.find()
-      res.render('product', { 
-        msg: 'Productos encontrados',
-        data: resp
-      })
-    } catch (err) {
-      res.status(400).send({ error: err.message })
+      res.send(resp)
+    } catch (error) {
+      console.error('Error al obtener los :', error);
+    res.status(500).json({ message: 'Error en el servidor' });
     }
 })
 
@@ -93,15 +91,45 @@ route.post('/productsPremium', requirePremium, async (req, res, next) => {
 })
 
 //funciona
-route.delete("/:pid", requireAdmin, async (req, res) => {
+route.delete("/deleteProd/:title", async (req, res) => {
   try {
-    const { pid } = req.params
-     const resp = await productmanagerm.deleteProduct(pid)
-    res.status(201).send(resp)
-  }catch (err) {
-    res.status(400).send({ error: err})
+    const { title } = req.params;
+
+    // Busca el producto para obtener el propietario
+    const product = await productmanagerm.getProds(title);
+    if (!product) {
+      return res.status(404).send({ error: 'Producto no encontrado' });
+    }
+
+    // Elimina el producto
+    const resp = await productmanagerm.deleteProduct(title);
+
+    // Busca al propietario del producto
+    const user = await userModel.findById(product.ownerId);
+    if (user && user.role === 'premium') {
+      // Envía un correo al propietario
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: user.mail,
+        subject: 'Producto eliminado',
+        text: `Estimado ${user.firstname},\n\nTu producto "${product.title}" ha sido eliminado del catálogo.\n\nSaludos,\nEquipo de Soporte`
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Error al enviar correo:', error);
+        } else {
+          console.log('Correo enviado:', info.response);
+        }
+      });
+    }
+
+    res.status(201).send(resp);
+  } catch (err) {
+    console.error('Error al eliminar el producto:', err);
+    res.status(400).send({ error: err });
   }
-})
+});
 
 
 route.delete("/premium/:pid", requirePremium, async (req, res, next) => {

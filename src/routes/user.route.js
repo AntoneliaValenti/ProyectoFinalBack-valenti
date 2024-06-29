@@ -17,16 +17,6 @@ route.get('/allUsers', requireAdmin, async (req, res) => {
   }
 });
 
-//ruta de prueba
-// route.get('/allUserstodos', async (req, res) => {
-//   try {
-//     const users = await userModel.find()
-//     res.status(200).json(users)
-//   } catch (error) {
-//     console.error('Error al obtener los usuarios:', error)
-//     res.status(500).json({ message: 'Error en el servidor' })
-//   }
-// })
 
 // Ruta para cambiar el rol del usuario
 route.post('/changeRoleAdmi/:userMail/:newRole', requireAdmin, async (req, res) => {

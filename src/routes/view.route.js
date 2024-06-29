@@ -9,8 +9,8 @@ route.get("/register", (req, res) => {
   res.render("register")
 })
 
-route.get("/products", async(req, res) => {
-  res.render("product")
+route.get("/allProducts", async(req, res) => {
+  res.render("products")
 })
 
 route.get("/cart", (req, res) => {
