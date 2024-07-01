@@ -28,6 +28,16 @@ route.get('/allProducts', async (req, res)=> {
     }
 })
 
+route.get('/allProductsUser', async (req, res)=> {
+  try {
+    let resp = await Product.find()
+    res.send(resp)
+  } catch (error) {
+    console.error('Error al obtener los :', error);
+  res.status(500).json({ message: 'Error en el servidor' });
+  }
+})
+
 route.get('/product/:productId', async (req, res) => {
   const { productId } = req.params;
 
@@ -46,7 +56,7 @@ route.get('/product/:productId', async (req, res) => {
 })
 
 // //funciona
-route.post('/products', async (req, res, next) => {
+route.post('/products', requireAdmin, async (req, res, next) => {
   try {
       const { title, price, category, stock } = req.body
 
@@ -69,7 +79,7 @@ route.post('/products', async (req, res, next) => {
 })
 
 
-route.post('/productsPremium', async (req, res, next) => {
+route.post('/productsPremium', requirePremium, async (req, res, next) => {
   try {
       const { title, price, category, stock } = req.body
 

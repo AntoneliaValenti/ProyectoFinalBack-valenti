@@ -37,5 +37,9 @@ route.get("/allUsers", (req, res) => {
   res.render("UsersManager")
 })
 
+route.get("/allProductsUser", (req, res) => {
+  res.render("productsUser")
+})
+
 
 module.exports = route; 
