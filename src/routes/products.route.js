@@ -1,6 +1,7 @@
 const express = require('express')
 const { Router } = require('express')
 const Product = require('../modelo/dao/db/models/product.model')
+const userModel = require('../modelo/dao/db/models/user.model')
 const route = new Router()
 const ProductManagerMongo = require('../modelo/services/productManagerMongo')
 const productmanagerm = new ProductManagerMongo()
@@ -68,7 +69,7 @@ route.post('/products', async (req, res, next) => {
 })
 
 
-route.post('/productsPremium', requirePremium, async (req, res, next) => {
+route.post('/productsPremium', async (req, res, next) => {
   try {
       const { title, price, category, stock } = req.body
 
@@ -91,28 +92,25 @@ route.post('/productsPremium', requirePremium, async (req, res, next) => {
 })
 
 //funciona
-route.delete("/deleteProd/:title", async (req, res) => {
+route.delete("/deleteProd/:pid", async (req, res) => {
   try {
-    const { title } = req.params;
+    const { pid } = req.params;
 
-    // Busca el producto para obtener el propietario
-    const product = await productmanagerm.getProds(title);
+    const product = await productmanagerm.getProds(pid);
     if (!product) {
       return res.status(404).send({ error: 'Producto no encontrado' });
     }
 
-    // Elimina el producto
-    const resp = await productmanagerm.deleteProduct(title);
+    const resp = await productmanagerm.deleteProduct(pid);
 
-    // Busca al propietario del producto
     const user = await userModel.findById(product.ownerId);
     if (user && user.role === 'premium') {
-      // Envía un correo al propietario
+     
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: user.mail,
         subject: 'Producto eliminado',
-        text: `Estimado ${user.firstname},\n\nTu producto "${product.title}" ha sido eliminado del catálogo.\n\nSaludos,\nEquipo de Soporte`
+        text: `Estimado ${user.firstname},\n\nTu producto "${product.pid}" ha sido eliminado del catálogo.\n\nSaludos,\nEquipo de Soporte`
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
