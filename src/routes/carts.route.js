@@ -38,10 +38,11 @@ route.post('/Cart1', async (req, res) => {
 
 
 //Agregar prod al carrito Funciona
-route.put('/agregarAlCarrito/:cartId/:productId', requireUser, async (req, res) => {
+route.put('/agregarAlCarrito/:productId', requireUser(), async (req, res) => {
   try {
-      let cartId = req.params.cartId;
       let productId = req.params.productId;
+      let cartId = req.cart._id;
+
       let response = await cartmanagerm.agregarAlCarrito(cartId, productId);
       if (response) {
           res.status(201).send({
@@ -54,28 +55,10 @@ route.put('/agregarAlCarrito/:cartId/:productId', requireUser, async (req, res) 
       }
   } catch (error) {
       console.error('Error al agregar el producto al carrito:', error);
+      res.status(500).send("Error interno del servidor");
   }
 });
 
-
-async (req, res) => {
-  try {
-    let cartId = req.params.cartId
-    let productId = req.params.productId
-    let response = await cartmanagerm.agregarAlCarrito(cartId, productId)
-    if (response) {
-      res.status(201).send({
-        msg: `Producto agregado con éxito al carrito`,
-      });
-    } else {
-      res.status(404).send({
-        msg: `Carrito ${cartId} no encontrado`,
-      })
-    }
-  } catch (error) {
-    console.error('Error al agregar el producto al carrito:', error)
-  }
-}
 
 //Eliminar prod del carrito Funciona
 route.delete('/eliminarProducto/:cartId/:productId', requireUser, async (req, res) => {
