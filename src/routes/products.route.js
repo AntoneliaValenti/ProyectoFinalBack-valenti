@@ -6,7 +6,6 @@ const route = new Router()
 const ProductManagerMongo = require('../modelo/services/productManagerMongo')
 const productmanagerm = new ProductManagerMongo()
 const { requireAdmin } = require('../middleware/auth')
-const { requireUser } = require('../middleware/auth')
 const { requirePremium } = require('../middleware/auth')
 const ProductDTO = require('../modelo/dto/products.dto')
 const CustomError = require("../modelo/services/errors/CustomError")
@@ -56,7 +55,7 @@ route.get('/product/:productId', async (req, res) => {
 })
 
 // //funciona
-route.post('/products', requireAdmin, async (req, res, next) => {
+route.post('/products', requireAdmin(), async (req, res, next) => {
   try {
       const { title, price, category, stock } = req.body
 
@@ -79,7 +78,7 @@ route.post('/products', requireAdmin, async (req, res, next) => {
 })
 
 
-route.post('/productsPremium', requirePremium, async (req, res, next) => {
+route.post('/productsPremium', requirePremium(), async (req, res, next) => {
   try {
       const { title, price, category, stock } = req.body
 
@@ -140,7 +139,7 @@ route.delete("/deleteProd/:pid", async (req, res) => {
 });
 
 
-route.delete("/premium/:pid", requirePremium, async (req, res, next) => {
+route.delete("/premium/:pid", requirePremium(), async (req, res, next) => {
   try {
     const { pid } = req.params
     const userId = req.user._id

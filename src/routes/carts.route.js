@@ -7,11 +7,10 @@ const route = new Router()
 const CartManagerMongo = require('../modelo/services/cartManagerMongo')
 const cartmanagerm = new CartManagerMongo()
 const { v4: uuidv4 } = require('uuid')
-const { requireAdmin } = require('../middleware/auth')
-const { requireUser } = require('../middleware/auth')
+
 
 //funciona
-route.get('/allCart', requireAdmin(),  async (req, res) => {
+route.get('/allCart',  async (req, res) => {
   try {
     let resp = await Carrito.find()
     res.send({
@@ -38,7 +37,7 @@ route.post('/Cart1', async (req, res) => {
 
 
 //Agregar prod al carrito Funciona
-route.put('/agregarAlCarrito/:productId', requireUser(), async (req, res) => {
+route.put('/agregarAlCarrito/:productId', async (req, res) => {
   try {
       let productId = req.params.productId;
       let cartId = req.cart._id;
@@ -61,7 +60,7 @@ route.put('/agregarAlCarrito/:productId', requireUser(), async (req, res) => {
 
 
 //Eliminar prod del carrito Funciona
-route.delete('/eliminarProducto/:cartId/:productId', requireUser, async (req, res) => {
+route.delete('/eliminarProducto/:cartId/:productId', async (req, res) => {
   try {
     let cartId = req.params.cartId
     let productId = req.params.productId

@@ -4,10 +4,10 @@ const route = new Router()
 const passport = require("passport")
 const {faker} = require('@faker-js/faker')  
 const userModel = require('../modelo/dao/db/models/user.model')
-const { requireAdmin } = require('../middleware/auth')
+
 
 // Ruta para obtener todos los usuarios y renderizar la vista
-route.get('/allUsers', requireAdmin, async (req, res) => {
+route.get('/allUsers', async (req, res) => {
   try {
     const users = await userModel.find();
     res.send(users);
@@ -19,7 +19,7 @@ route.get('/allUsers', requireAdmin, async (req, res) => {
 
 
 // Ruta para cambiar el rol del usuario
-route.post('/changeRoleAdmi/:userMail/:newRole', requireAdmin, async (req, res) => {
+route.post('/changeRoleAdmi/:userMail/:newRole', async (req, res) => {
   const { userMail } = req.params;
   const { newRole } = req.params;
   console.log(userMail, newRole)
@@ -39,7 +39,7 @@ route.post('/changeRoleAdmi/:userMail/:newRole', requireAdmin, async (req, res) 
 });
 
 // Ruta para eliminar un usuario
-route.delete('/deleteUser/:userMail', requireAdmin, async (req, res) => {
+route.delete('/deleteUser/:userMail', async (req, res) => {
   const { userMail } = req.params;
 
   try {

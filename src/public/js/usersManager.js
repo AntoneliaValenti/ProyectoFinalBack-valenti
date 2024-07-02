@@ -33,6 +33,7 @@ deleteuser.addEventListener('click', async () => {
 })
     const data = await response.json()
     console.log(data)
+    alert('usuario eliminado')
 })
 
 }

@@ -40,4 +40,9 @@ async function ProductsU() {
             alert('Error al agregar el producto al carrito');
         }
     });
+
+    const cartBtn = document.querySelector('#cartUser');
+    addProdBtn.addEventListener('click', async () =>{
+
+    })
 }
