@@ -42,7 +42,61 @@ async function ProductsU() {
     });
 
     const cartBtn = document.querySelector('#cartUser');
-    addProdBtn.addEventListener('click', async () =>{
+    cartBtn.addEventListener('click', async () => {
+        try {
+            const userData = await fetch(`/api/session/currentUsers`);
+            const data = await userData.json();
 
-    })
+            const response = await fetch(`/api/cart/carts/${data.cart}`);
+
+
+            if (response.ok) {
+                const cart = await response.json();
+                displayCart(cart);
+            } else {
+                const errorData = await response.json();
+                alert(`Error al obtener el carrito: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('Error al obtener el carrito:', error);
+            alert('Error al obtener el carrito');
+        }
+    });
+
+    const compraTotal = document.querySelector('#tk-compra');
+    compraTotal.addEventListener('click', async () => {
+        try {
+            const userData = await fetch(`/api/session/currentUsers`);
+            const data = await userData.json();
+
+            const response = await fetch(`/api/cart/${data.cart}/purchase`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mail: data.mail }),
+            });
+
+            if (response.ok) {
+                await response.json();
+                alert('Compra realizada correctamente y correo enviado');
+            } else {
+                const errorData = await response.json();
+                console.error('Error al realizar la compra:', errorData);
+                alert('Error al realizar la compra');
+            }
+        } catch (error) {
+            console.error('Error al obtener el carrito:', error);
+            alert('Error al obtener el carrito');
+        }
+    });
+
 }
+    function displayCart(cart) {
+        const cartDiv = document.querySelector('#cartContents');
+        cartDiv.innerHTML = '';
+
+        cart.products.forEach(product => {
+            const productElement = document.createElement('div');
+            productElement.innerHTML = `<span>Producto: ${product.product.title}, Precio: ${product.product.price}, Cantidad: ${product.amount}</span>`;
+            cartDiv.appendChild(productElement);
+        });
+    }

@@ -3,14 +3,23 @@ const { Router } = require('express')
 const Carrito = require('../modelo/dao/db/models/cart.model')
 const Product = require('../modelo/dao/db/models/product.model')
 const Ticket = require('../modelo/dao/db/models/ticket.model')
+const nodemailer = require('nodemailer')
 const route = new Router()
 const CartManagerMongo = require('../modelo/services/cartManagerMongo')
 const cartmanagerm = new CartManagerMongo()
 const { v4: uuidv4 } = require('uuid')
 
+const transporter = nodemailer.createTransport({
+  service: 'hotmail', 
+  auth: {
+      user: 'lanto09@hotmail.com',
+      pass: 'credil47'
+  }
+})
+
 
 //funciona
-route.get('/allCart',  async (req, res) => {
+route.get('/allCart', async (req, res) => {
   try {
     let resp = await Carrito.find()
     res.send({
@@ -39,22 +48,22 @@ route.post('/Cart1', async (req, res) => {
 //Agregar prod al carrito Funciona
 route.put('/agregarAlCarrito/:productId', async (req, res) => {
   try {
-      let productId = req.params.productId;
-      let cartId = req.cart._id;
+    let productId = req.params.productId;
+    let cartId = req.session.passport.user.cart;
 
-      let response = await cartmanagerm.agregarAlCarrito(cartId, productId);
-      if (response) {
-          res.status(201).send({
-              msg: `Producto agregado con éxito al carrito`,
-          });
-      } else {
-          res.status(404).send({
-              msg: `Carrito ${cartId} no encontrado`,
-          });
-      }
+    let response = await cartmanagerm.agregarAlCarrito(cartId, productId);
+    if (response) {
+      res.status(201).send({
+        msg: `Producto agregado con éxito al carrito`,
+      });
+    } else {
+      res.status(404).send({
+        msg: `Carrito ${cartId} no encontrado`,
+      });
+    }
   } catch (error) {
-      console.error('Error al agregar el producto al carrito:', error);
-      res.status(500).send("Error interno del servidor");
+    console.error('Error al agregar el producto al carrito:', error);
+    res.status(500).send("Error interno del servidor");
   }
 });
 
@@ -65,7 +74,7 @@ route.delete('/eliminarProducto/:cartId/:productId', async (req, res) => {
     let cartId = req.params.cartId
     let productId = req.params.productId
     let response = await cartmanagerm.eliminarDelCarrito(cartId, productId)
-    
+
     if (response) {
       res.status(201).send({
         msg: `Producto eliminado con éxito`,
@@ -83,10 +92,10 @@ route.delete('/eliminarProducto/:cartId/:productId', async (req, res) => {
 
 route.post('/:cid/purchase', async (req, res) => {
   const { cid: cartId } = req.params
-  const mail = req.params.user.mail
+  const { mail } = req.body;
 
   try {
-    const cart = await Carrito.findById(cartId)
+    const cart = await Carrito.findById(cartId).populate('products.product');
 
     if (!cart) {
       return res.status(404).json({ error: 'Carrito no encontrado' })
@@ -104,7 +113,7 @@ route.post('/:cid/purchase', async (req, res) => {
     await ticket.save()
 
     if (ticket) {
-      await cart.remove()
+    await Carrito.updateOne({_id: cart._id}, {$set: {products: []}});
 
       res.status(200).json({ success: true, message: 'Compra realizada correctamente', ticket })
     } else {
@@ -122,6 +131,7 @@ function generateUniqueCode() {
 
 function calculateTotalItems(cart) {
   let totalItems = 0
+  let totalPrice = 0
 
   cart.products.forEach(product => {
     const productPrice = product.quantity * product.price
@@ -130,7 +140,6 @@ function calculateTotalItems(cart) {
 
   return totalItems
 }
-
 
 route.put('/eliminarCarrito/:cid', async (req, res) => {
   try {
@@ -145,12 +154,12 @@ route.put('/eliminarCarrito/:cid', async (req, res) => {
     console.error(error)
   }
 })
- 
+
 route.get('/carts/:cartId', async (req, res) => {
   const { cartId } = req.params;
 
   try {
-    const cart = await Carrito.findById(cartId).populate('products.product');
+    const cart = await Carrito.findById(cartId)
 
     if (!cart) {
       return res.status(404).json({ message: 'Carrito no encontrado' });

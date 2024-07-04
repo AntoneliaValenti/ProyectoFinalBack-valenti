@@ -6,6 +6,10 @@ const {faker} = require('@faker-js/faker')
 const userModel = require('../modelo/dao/db/models/user.model')
 
 
+route.get('/currentUsers', (req, res) => {
+  res.send(req.session.passport.user)
+})
+
 // Ruta para obtener todos los usuarios y renderizar la vista
 route.get('/allUsers', async (req, res) => {
   try {
