@@ -3,19 +3,10 @@ const { Router } = require('express')
 const Carrito = require('../modelo/dao/db/models/cart.model')
 const Product = require('../modelo/dao/db/models/product.model')
 const Ticket = require('../modelo/dao/db/models/ticket.model')
-const nodemailer = require('nodemailer')
 const route = new Router()
 const CartManagerMongo = require('../modelo/services/cartManagerMongo')
 const cartmanagerm = new CartManagerMongo()
 const { v4: uuidv4 } = require('uuid')
-
-const transporter = nodemailer.createTransport({
-  service: 'hotmail', 
-  auth: {
-      user: 'lanto09@hotmail.com',
-      pass: 'credil47'
-  }
-})
 
 
 //funciona

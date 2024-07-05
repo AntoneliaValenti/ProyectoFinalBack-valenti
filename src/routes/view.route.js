@@ -40,7 +40,7 @@ route.get("/allUsers", requireAdmin(), (req, res) => {
   res.render("UsersManager")
 })
 
-route.get("/allProductsUser", requireUser(), (req, res) => {
+route.get("/allProductsUser", requireUser(), requirePremium(), (req, res) => {
   res.render("productsUser")
 })
 

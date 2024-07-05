@@ -22,7 +22,7 @@ route.post('/finalizarCompra', async (req, res) => {
   
       const mailOptions = {
         from: 'Ecommerce <antuval09@gmail.com>',
-        to: 'ramirostrologo@gmail.com',
+        to: purchaser,
         subject: 'Ticket de compra',
         html: mailBody
       }

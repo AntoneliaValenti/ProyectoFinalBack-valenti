@@ -116,7 +116,7 @@ route.delete("/deleteProd/:pid", async (req, res) => {
 
     const user = await userModel.findById(product.ownerId);
     if (user && user.role === 'premium') {
-      await sendDeletionEmail(user.mail, user.firstname, product.name);
+      await sendDeletionEmail(user.mail, user.firstname, product.title);
     }
 
     res.status(201).send(resp);
@@ -127,12 +127,12 @@ route.delete("/deleteProd/:pid", async (req, res) => {
 });
 
 
-async function sendDeletionEmail(mail, firstName, productName) {
+async function sendDeletionEmail(mail, firstname, title) {
   const mailOptions = {
     from: process.env.MAIL_USER,
     to: mail,
     subject: 'Producto eliminado',
-    text: `Estimado ${firstName},\n\nTu producto "${productName}" ha sido eliminado del catálogo.\n\nSaludos,\nEquipo de Soporte`
+    text: `Estimado ${firstname},\n\nTu producto "${title}" ha sido eliminado del catálogo.\n\nSaludos,\nEquipo de Soporte`
   };
 
   try {

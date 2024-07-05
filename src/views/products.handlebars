@@ -1,15 +1,38 @@
 <h1>Todos los productos</h1>
 <main>
-    <div id="card"></div>
-    <div id="cardProd">
-        <label for='pid'>Producto ID</label>
-        <input type='text' id='pid' />
+  <div id="card"></div>
+  <div id="cardProd">
+    <label for='pid'>Producto ID</label>
+    <input type='text' id='pid' />
 
-            <button id='deleteProd'>ELIMINAR</button>   
-    </div>
-  <div><a href='/api/view/profile'>Volver</a>  </div>
+    <button id='deleteProd'>ELIMINAR</button>
+  </div>
+
+  <div>
+    <h1>Agregar Producto</h1>
+    <form action="/api/products/products" method="post">
+      <label for="title">Nombre: </label>
+      <input type="text" id="title" name="title" />
+
+      <label for="price">Precio: </label>
+      <input type="price" id="price" name="price" />
+
+      <label for="category">Categoria:</label>
+      <select name="category" id="category" required>
+        <option value="dulce">Dulce</option>
+        <option value="salado">Salado</option>
+      </select>
+
+      <label for="stock">Stock: </label>
+      <input type="text" id="stock" name="stock" />
+
+      <input type="submit" value="Agregar" />
+
+    </form>
+  </div>
+
+  <div><a href='/api/view/profile'>Volver</a> </div>
 </main>
 
 
-   <script src='/js/products.js'></script>
-
+<script src='/js/products.js'></script>
