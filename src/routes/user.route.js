@@ -62,32 +62,53 @@ route.delete('/deleteUser/:userMail', async (req, res) => {
     res.status(500).json({ message: 'Error en el servidor' });
   }
 });
+
+//Ruta para eliminar los usuarios inactivos
 //menos admi
 route.delete('/inactiveUsers', async (req, res) => {
   try {
-    const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000)
+  
+    const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
 
-    const inactiveUsers = await userModel.find({ last_connection: { $lt: thirtyMinutesAgo } });
+    const inactiveUsers = await userModel.find({
+      last_connection: { $lt: fortyEightHoursAgo },
+      role: { $ne: 'admin' }
+    });
 
     if (inactiveUsers.length === 0) {
       return res.status(200).json({ message: 'No hay usuarios inactivos para eliminar' });
     }
 
+
     const emailPromises = inactiveUsers.map(async (user) => {
-      await userModel.deleteOne({ _id: user._id })
-      sendDeletionEmail(user.mail, user.firstname)
+      await userModel.deleteOne({ _id: user._id });
+      await sendDeletionEmail(user.mail, user.firstname);
     });
 
-    await Promise.all(emailPromises)
+    await Promise.all(emailPromises);
 
-    res.status(200).json({ message: `${inactiveUsers.length} usuarios inactivos eliminados y correos enviados` })
+    res.status(200).json({ message: `${inactiveUsers.length} usuarios inactivos eliminados y correos enviados` });
   } catch (error) {
-    console.error('Error al eliminar usuarios inactivos:', error)
-    res.status(500).json({ message: 'Error en el servidor' })
+    console.error('Error al eliminar usuarios inactivos:', error);
+    res.status(500).json({ message: 'Error en el servidor' });
   }
-})
+});
 
+async function sendDeletionEmail(mail, firstName) {
+  const mailOptions = {
+    from: 'a.valenti3003@gmail.com',
+    to: mail,
+    subject: 'Cuenta Eliminada por Inactividad',
+    text: `Hola ${firstName},\n\nTu cuenta ha sido eliminada debido a la inactividad prolongada.\n\nSaludos,\nEquipo de Ecommerce`
+  };
 
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`Correo enviado a ${mail}`);
+  } catch (error) {
+    console.error('Error al enviar el correo:', error);
+  }
+}
 
 //rutas solicitadas en desafios anteriores
 

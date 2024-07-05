@@ -15,6 +15,7 @@ const cartRoute = require("./src/routes/carts.route")
 const usersRoute = require("./src/routes/user.route")
 const viewRoute = require("./src/routes/view.route")
 const mockRoute = require("./src/routes/mock.route")
+const mail = require("./src/routes/mail.route")
 const restablecerRoute = require("./src/routes/restablecer.route")
 const session = require("express-session")
 //const {createHash} = require('./utils/bcrypts')
@@ -70,36 +71,7 @@ app.use("/api/session", usersRoute)
 app.use("/api/mock", mockRoute)
 app.use("/api/reset", restablecerRoute)
 //app.use(errorHandler)
-app.use("/mail", async (req, res) => {
-  try {
-    const { id, code, purchase_datetime, amount, purchaser } = req.body
-    const mailBody = `
-        <div>
-            <h2>Muchas gracias por su compra!</h2>
-            <p>Detalles del ticket:</p>
-            <ul>
-                <li><strong>Código:</strong> ${code}</li>
-                <li><strong>Fecha de compra:</strong> ${purchase_datetime}</li>
-                <li><strong>Monto:</strong> ${amount}</li>
-                <li><strong>Comprador:</strong> ${purchaser}</li>
-            </ul>
-        </div>
-    `
-
-    const mailOptions = {
-      from: 'Ecommerce <a.valenti3003@gmail.com>',
-      to: 'lanto09@hotmail.com',
-      subject: 'Ticket de compra',
-      html: mailBody
-    }
-
-    await transporter.sendMail(mailOptions)
-    res.status(200).send('Correo electrónico enviado con éxito')
-  } catch (error) {
-    console.error('Error al enviar el correo electrónico:', error)
-    res.status(500).send('Error interno del servidor al enviar el correo electrónico')
-  }
-})
+app.use("/api/mail", mail)
 
 
 //ENGINE

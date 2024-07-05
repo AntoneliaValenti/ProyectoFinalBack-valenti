@@ -12,11 +12,11 @@ const CustomError = require("../modelo/services/errors/CustomError")
 const EErrors = require("../modelo/services/errors/enums")
 const { generateUserErrorInfo } = require("../modelo/services/errors/messages/user-creation-error.message")
 const errorHandler = require('../modelo/services/errors/middleware/index')
+const transporter = require('../config/mail')
 
 
 
-
-//funciona
+//funciona Trae los productos para el Admi
 route.get('/allProducts', async (req, res)=> {
     try {
       let resp = await Product.find()
@@ -27,6 +27,7 @@ route.get('/allProducts', async (req, res)=> {
     }
 })
 
+//funciona Trae los productos para el Usuario
 route.get('/allProductsUser', async (req, res)=> {
   try {
     let resp = await Product.find()
@@ -37,6 +38,7 @@ route.get('/allProductsUser', async (req, res)=> {
   }
 })
 
+//funciona Trae los productos por id
 route.get('/product/:productId', async (req, res) => {
   const { productId } = req.params;
 
@@ -54,7 +56,7 @@ route.get('/product/:productId', async (req, res) => {
   }
 })
 
-// //funciona
+// //funciona Crea productos por el Admi
 route.post('/products', requireAdmin(), async (req, res, next) => {
   try {
       const { title, price, category, stock } = req.body
@@ -77,7 +79,7 @@ route.post('/products', requireAdmin(), async (req, res, next) => {
   }
 })
 
-
+//funciona Crea productos por el Usuario Premium
 route.post('/productsPremium', requirePremium(), async (req, res, next) => {
   try {
       const { title, price, category, stock } = req.body
@@ -100,7 +102,7 @@ route.post('/productsPremium', requirePremium(), async (req, res, next) => {
   }
 })
 
-//funciona
+//funciona Borra productos por Id
 route.delete("/deleteProd/:pid", async (req, res) => {
   try {
     const { pid } = req.params;
@@ -114,21 +116,7 @@ route.delete("/deleteProd/:pid", async (req, res) => {
 
     const user = await userModel.findById(product.ownerId);
     if (user && user.role === 'premium') {
-     
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: user.mail,
-        subject: 'Producto eliminado',
-        text: `Estimado ${user.firstname},\n\nTu producto "${product.pid}" ha sido eliminado del catálogo.\n\nSaludos,\nEquipo de Soporte`
-      };
-
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error('Error al enviar correo:', error);
-        } else {
-          console.log('Correo enviado:', info.response);
-        }
-      });
+      await sendDeletionEmail(user.mail, user.firstname, product.name);
     }
 
     res.status(201).send(resp);
@@ -139,6 +127,23 @@ route.delete("/deleteProd/:pid", async (req, res) => {
 });
 
 
+async function sendDeletionEmail(mail, firstName, productName) {
+  const mailOptions = {
+    from: process.env.MAIL_USER,
+    to: mail,
+    subject: 'Producto eliminado',
+    text: `Estimado ${firstName},\n\nTu producto "${productName}" ha sido eliminado del catálogo.\n\nSaludos,\nEquipo de Soporte`
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Correo enviado:', info.response);
+  } catch (error) {
+    console.error('Error al enviar correo:', error);
+  }
+}
+
+//funciona Borra productos por el Usuario premium
 route.delete("/premium/:pid", requirePremium(), async (req, res, next) => {
   try {
     const { pid } = req.params

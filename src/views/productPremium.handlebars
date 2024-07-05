@@ -1,0 +1,25 @@
+<div>
+  <h1>Agregar Producto</h1>
+  <form action="/api/products/productsPremium" method="post">
+    <label for="title">Nombre: </label>
+    <input type="text" id="title" name="title" />
+
+    <label for="price">Precio: </label>
+    <input type="price" id="price" name="price" />
+
+    <label for="category">Categoria:</label>
+            <select name="category" id="category" required>
+            <option value="dulce">Dulce</option>
+            <option value="salado">Salado</option>
+        </select>
+
+    <label for="stock">Stock: </label>
+    <input type="text" id="stock" name="stock" />
+
+    <input type="submit" value="Agregar" />
+    
+  </form>
+
+  <a href="/api/session/current">Volver</a>
+ 
+</div>

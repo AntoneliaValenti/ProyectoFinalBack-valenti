@@ -44,5 +44,8 @@ route.get("/allProductsUser", requireUser(), (req, res) => {
   res.render("productsUser")
 })
 
+route.get("/productsPremium", requirePremium(), (req, res) => {
+  res.render("productPremium")
+})
 
 module.exports = route; 

@@ -76,7 +76,13 @@ async function ProductsU() {
             });
 
             if (response.ok) {
-                await response.json();
+                const data = await response.json();
+                console.log(data)
+                await fetch(`/api/mail/finalizarCompra`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ticket: data.ticket }),
+                });
                 alert('Compra realizada correctamente y correo enviado');
             } else {
                 const errorData = await response.json();
